@@ -1,0 +1,48 @@
+@font-face {
+  font-family: Circular;
+  src: url(./assests/circular-medium.woff2);
+}
+
+* {
+  margin: 0;
+  user-select: none;
+  overflow: hidden;
+}
+
+*::before,
+*::after {
+  margin: 0;
+  user-select: none;
+  overflow: hidden;
+}
+
+body {
+  margin: 0;
+  font-family: Circular, Helvetica, Arial, sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+  color: white;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+a {
+  color: white;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+a:link,
+a:visited {
+  text-decoration: none;
+}
+
+a:hover,
+a:active,
+a:focus {
+  color: white;
+}

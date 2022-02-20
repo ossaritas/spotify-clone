@@ -1,0 +1,15 @@
+.browse {
+  margin-top: 70px;
+  width: 100%;
+  height: 100vh;
+
+  display: grid;
+}
+
+.browse-container {
+  padding: 20px;
+  display: grid;
+  grid-gap: 16px;
+  grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+  grid-template-rows: auto;
+}

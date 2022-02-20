@@ -1,0 +1,21 @@
+.search {
+  background-color: tomato;
+  height: 100%;
+}
+
+.search-nav {
+  padding: 10px 20px 10px 20px;
+  background-color: violet;
+  display: flex;
+}
+
+.search-nav > input {
+  width: 360px;
+  height: 40px;
+  cursor: text;
+  display: inline-block;
+  box-shadow: none;
+  border-radius: 50px;
+  font-size: 14px;
+  text-decoration: none solid rgb(0, 0, 0);
+}

@@ -1,0 +1,36 @@
+.playlist-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.playlist {
+  padding: 0;
+  list-style: none;
+}
+
+.playlist > li {
+  width: 80%;
+  overflow: hidden;
+  padding: 2px 2px 0 2px;
+}
+
+.playlist > li > a {
+  color: #b3b3b3;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.playlist > li > a:link,
+.playlist > li > a:visited {
+  text-decoration: none;
+}
+
+.playlist > li > a:hover,
+.playlist > li > a:active,
+.playlist > li > a:focus {
+  color: white;
+}
