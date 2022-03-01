@@ -5,13 +5,13 @@ import App from "./App";
 
 import { BrowserRouter } from "react-router-dom";
 
-import { SpotifyContextProvider } from "./store/context";
+import { PlayerContextProvider } from "./store/player-context";
 
 ReactDOM.render(
   <BrowserRouter>
-    <SpotifyContextProvider>
+    <PlayerContextProvider>
       <App />
-    </SpotifyContextProvider>
+    </PlayerContextProvider>
   </BrowserRouter>,
   document.getElementById("root")
 );

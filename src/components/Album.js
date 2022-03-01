@@ -1,73 +1,64 @@
 import { useState, useEffect, useContext } from "react";
-import axios from "axios";
-import MainContainer from "./Hero/MainContainer";
 
+import Spotify from "../store/Spotify";
 import Song from "./Song";
+import NavButtons from "./Hero/NavButtons";
 import CustomIcon from "./UI/CustomIcon";
-import SpotifyProvider from "../store/context";
-
+import MainContainer from "./Hero/MainContainer";
 import PlayCircleFilledIcon from "@mui/icons-material/PlayCircleFilled";
 import FavoriteBorderRoundedIcon from "@mui/icons-material/FavoriteBorderRounded";
 
 import classes from "./Album.module.css";
-
-const PLAYLISTS_ENDPOINT =
-  "https://api.spotify.com/v1/playlists/37i9dQZF1DXbIeCFU20wRm/tracks";
+import { useParams } from "react-router-dom";
 
 const Album = () => {
-  const ctx = useContext(SpotifyProvider);
-
-  const [data, setData] = useState([]);
-  const [art, setArt] = useState([]);
-
+  const [albums, setAlbums] = useState([]);
+  const [aa, setAa] = useState({});
+  const params = useParams();
+  const albumId = params.albumId;
   useEffect(() => {
-    const sendGetRequest = async () => {
-      try {
-        const resp = await axios.get(PLAYLISTS_ENDPOINT, {
-          headers: {
-            Authorization: "Bearer " + ctx.token,
-          },
-        });
-        setData(resp.data);
-      } catch (error) {}
-    };
-    if (ctx.token) {
-      sendGetRequest();
-    }
-  }, [ctx.token]);
-  useEffect(() => {
-    const getArtist = async () => {
-      try {
-        const resp = await axios.get(
-          "https://api.spotify.com/v1/artists/0YC192cP3KPCRWx8zr8MfZ",
-          {
-            headers: {
-              Authorization: "Bearer " + ctx.token,
-            },
-          }
-        );
-        setArt(resp.data);
-      } catch (error) {}
-    };
-    if (ctx.token) {
-      getArtist();
-    }
-  }, [ctx.token]);
+    const getDetails = async () => {
+      const details = await Spotify.getAlbums(albumId);
+      let { name, label, release_date, total_tracks } = details;
+      let cover = details.images[1].url;
+      let items = details.tracks.items;
 
-  console.log(art);
+      setAlbums({
+        name,
+        cover,
+        items,
+        label,
+        release_date,
+        total_tracks,
+      });
+    };
+    getDetails();
+  }, [albumId]);
+  // useEffect(() => {
+  //   const getDetails = async () => {
+  //     const details = await Spotify.getPlayer();
+
+  //     setAa(details);
+  //   };
+  //   getDetails();
+  // }, []);
+
+  console.log(albums);
+  console.log(aa);
 
   return (
     <MainContainer>
+      <NavButtons />
       <section className={classes.container}>
         <div className={classes.header}>
           <div className={classes["image-container"]}>
-            <img
-              src="https://i.scdn.co/image/ab67706f00000003543c9b8ccbe5fc781758f0d8"
-              alt="rep"
-            />
+            <img src={albums.cover} alt="rep" />
           </div>
           <div className={classes.info}>
-            <p>ALBUM</p>
+            <p>{albums.name}</p>
+            <span>Label: {albums.label}</span>
+            <span>Release Date: {albums.release_date}</span>
+            <span>Total Tracks: {albums.total_tracks}</span>
           </div>
         </div>
         <div className={classes.list}>
@@ -86,12 +77,25 @@ const Album = () => {
 
           <div>
             <ul className={classes.title}>
-              <li>#</li>
+              <li> #</li>
               <li>Title</li>
               <li>Artist</li>
-              <li>Album</li>
             </ul>
             <p className={classes.divider}></p>
+            <div className={classes["track-container"]}>
+              {albums.items
+                ? albums.items.map((item) => (
+                    <Song
+                      className={classes["album-tracks"]}
+                      key={item.id}
+                      name={item.name}
+                      artist={item.artists[0].name}
+                      artist_link={item.artists[0].id}
+                      img={albums.cover}
+                    />
+                  ))
+                : null}
+            </div>
           </div>
           <div className={classes.songs}></div>
         </div>

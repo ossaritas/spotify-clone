@@ -16,9 +16,10 @@ const Spotify = {
     const expiresIn = window.location.href.match(/expires_in=([^&]*)/);
     if (accessToken && expiresIn) {
       spotifyAccesToken = accessToken[1];
+      localStorage.setItem("accessToken", spotifyAccesToken);
       let expiryTime = Number(expiresIn[1]);
       window.setTimeout(() => (spotifyAccesToken = ""), expiryTime * 1000);
-      window.history.pushState("Access Token", "", "/");
+      window.history.pushState("Access Token", " ", "/");
       return spotifyAccesToken;
     } else {
       const url = `https://accounts.spotify.com/authorize?client_id=${clientId}&redirect_uri=${redirectUri}&scope=${encodeURIComponent(
@@ -302,6 +303,28 @@ const Spotify = {
     const jsonResponse = await response.json();
     return jsonResponse;
   },
+  async getPlayer() {
+    const token = this.getAccessToken();
+    const headers = {
+      Authorization: `Bearer ${token}`,
+      "content-type": "application/json",
+    };
+    const response = await fetch(
+      `https://api.spotify.com/v1/me/player/recently-played
+    `,
+      {
+        headers: headers,
+        method: "GET",
+      }
+    );
+    const jsonResponse = await response.json();
+    return jsonResponse;
+  },
+  async getYoutubeSong(url) {
+    const response = await fetch(`${url}`);
+    const jsonResponse = await response.json();
+    return jsonResponse;
+  },
 
   // Add tracks to an existing playlist.
   /*   async addTracks(token, userId, playlistID, trackURIs) {
@@ -325,4 +348,5 @@ const Spotify = {
     return false;
   } */
 };
+
 export default Spotify;

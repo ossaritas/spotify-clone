@@ -1,20 +1,19 @@
 import classes from "./NavBar.module.css";
+import { Link } from "react-router-dom";
 
 const NavBar = () => {
   return (
     <div className={classes.navbar}>
       <ul className={classes["nav-items"]}>
         <li>
-          <a href="#1">Playlists</a>
+          <p>FEATURED</p>
         </li>
         <li>
-          <a href="#">Artists</a>
+          <Link to="/playlist"> Playlists</Link>
         </li>
+
         <li>
-          <a href="#">Podcasts</a>
-        </li>
-        <li>
-          <a href="#">Albums</a>
+          <Link to="/albums">Albums</Link>{" "}
         </li>
       </ul>
     </div>

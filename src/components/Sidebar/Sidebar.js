@@ -11,7 +11,7 @@ import PlayList from "./Playlist";
 const homeOptions = [
   { title: "Home", link: "/", icon: <HomeIcon className={classes.icon} /> },
   { title: "Search", link: "/search", icon: <SearchIcon /> },
-  { title: "Your Library", link: "/album", icon: <LibraryMusicIcon /> },
+  { title: "Liked Songs", link: "/liked", icon: <LibraryMusicIcon /> },
 ];
 
 const Sidebar = () => {

@@ -12,7 +12,7 @@ const Card = (props) => {
       <div className={classes.description}>
         <span>{props.description}</span>
         <button className={classes["play-btn"]}>
-          <Link to={`/playlist/${props.id}`}>
+          <Link to={`/${props.type}/${props.id}`}>
             <PlayArrowRounded style={{ width: "40px", height: "40px" }} />
           </Link>
         </button>

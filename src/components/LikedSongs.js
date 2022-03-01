@@ -4,7 +4,7 @@ import CustomIcon from "./UI/CustomIcon";
 import PlayCircleFilledIcon from "@mui/icons-material/PlayCircleFilled";
 import FavoriteBorderRoundedIcon from "@mui/icons-material/FavoriteBorderRounded";
 
-import classes from "./PlaylistElement.module.css";
+import classes from "./LikedSongs.module.css";
 
 import MainContainer from "./Hero/MainContainer";
 import NavButtons from "./Hero/NavButtons";
@@ -13,25 +13,21 @@ import Song from "./Song";
 import Spotify from "../store/Spotify";
 import { useParams } from "react-router-dom";
 
-const PlaylistElement = () => {
+const LikedSongs = () => {
   const params = useParams();
   console.log(params);
-  const trackId = params.trackId;
   const [tracks, setTracks] = useState([]);
-  const [img, setImg] = useState([]);
-  const [details, setDetails] = useState([]);
 
   useEffect(() => {
     const getDetails = async () => {
-      const details = await Spotify.getPlaylistDetails(trackId);
-      setDetails(details);
-      let img = details.images[0].url;
-      setImg(img);
-      let tracks = details.tracks;
+      const details = await Spotify.getLikedSongs();
+      let tracks = details.items;
       setTracks(tracks);
     };
     getDetails();
-  }, [trackId]);
+  }, []);
+
+  console.log(tracks);
 
   return (
     <MainContainer>
@@ -39,7 +35,10 @@ const PlaylistElement = () => {
       <section className={classes.container}>
         <div className={classes.header}>
           <div className={classes["image-container"]}>
-            <img src={img} alt="rep" />
+            <img
+              src="https://t.scdn.co/images/3099b3803ad9496896c43f22fe9be8c4.png"
+              alt="rep"
+            />
           </div>
           <div className={classes.info}>
             <span
@@ -49,10 +48,8 @@ const PlaylistElement = () => {
                 color: "white",
               }}
             >
-              Playlist
+              Liked Songs
             </span>
-            <p>{details.name}</p>
-            <span>{details.description}</span>
           </div>
         </div>
         <div className={classes.list}>
@@ -77,8 +74,8 @@ const PlaylistElement = () => {
               <li>Album</li>
             </ul>
             <p className={classes.divider}></p>
-            {tracks.items
-              ? tracks.items.map((item) => (
+            {tracks
+              ? tracks.map((item) => (
                   <Song
                     key={item.track.id}
                     img={item.track.album.images[2].url}
@@ -97,4 +94,4 @@ const PlaylistElement = () => {
   );
 };
 
-export default PlaylistElement;
+export default LikedSongs;

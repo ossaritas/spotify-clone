@@ -1,23 +1,83 @@
+import { useEffect, useState, useContext } from "react";
 import classes from "./Footer.module.css";
 import PlayCircleIcon from "@mui/icons-material/PlayCircle";
+import PauseCircleFilledIcon from "@mui/icons-material/PauseCircleFilled";
 import SkipPreviousIcon from "@mui/icons-material/SkipPrevious";
 import SkipNextIcon from "@mui/icons-material/SkipNext";
 import VolumeUpIcon from "@mui/icons-material/VolumeUp";
+import VolumeOffIcon from "@mui/icons-material/VolumeOff";
 import DevicesIcon from "@mui/icons-material/Devices";
 
+import ReactPlayer from "react-player/youtube";
+import PlayerContext from "../../store/player-context";
+import Spotify from "../../store/Spotify";
+import Duration from "./Duration";
+
 const Footer = () => {
+  const [url, setUrl] = useState(null);
+  const plyCtx = useContext(PlayerContext);
+  useEffect(async () => {
+    const details = await Spotify.getYoutubeSong(plyCtx.searchQ);
+    let { url } = details;
+    setUrl(url);
+  }, [plyCtx.searchQ]);
+
+  const seekMouseUp = (e) => {
+    plyCtx.onMouseUp();
+    player.seekTo(parseFloat(e.target.value), "fraction");
+  };
+
+  let player;
+  const ref = (playerRef) => {
+    player = playerRef;
+  };
+  console.log(plyCtx.searchQ);
+  console.log(url);
+  console.log(plyCtx.duration);
+
   return (
     <footer className={classes["footer-container"]}>
       <div className={classes.info}>
-        <img src="https://dummyimage.com/60x60/f3ff4a/d41717.jpg" alt="rep" />
-        <a>Proin magna. Sed consequat</a>
+        <ReactPlayer
+          ref={ref}
+          url={url}
+          volume={plyCtx.volume}
+          width={0}
+          height={0}
+          playing={plyCtx.playing}
+          muted={plyCtx.muted}
+          onSeek={() => plyCtx.onHandleSeek}
+          onPlay={() => plyCtx.onPlay}
+          onProgress={plyCtx.onProgress}
+          onDuration={plyCtx.onDuration}
+        />
+
+        <div className={classes["img-container"]}>
+          <img src={plyCtx.songData.img} alt="" />
+        </div>
+        <p>
+          {plyCtx.songData.artist} _ {plyCtx.songData.song}
+        </p>
       </div>
       <div className={classes.player}>
-        <div className={classes["player-duration"]}>
-          <a>0:00</a>
-          <input className={classes.range} type="range" />
-          <a>0:00</a>
+        <div>
+          <Duration
+            className={classes.duration}
+            seconds={plyCtx.progress.playedSeconds}
+          />
+          <input
+            onMouseDown={plyCtx.onMouseDown}
+            onMouseUp={seekMouseUp}
+            onChange={plyCtx.onHandleSeek}
+            type="range"
+            min={0}
+            max={1}
+            step="any"
+            value={plyCtx.progress.played}
+          />
+          <Duration className={classes.duration} seconds={plyCtx.duration} />
         </div>
+
         <ul className={classes["player-actions"]}>
           <li>
             <button>
@@ -26,8 +86,12 @@ const Footer = () => {
           </li>
 
           <li>
-            <button>
-              <PlayCircleIcon fontSize="large" />
+            <button onClick={plyCtx.onPlayPause}>
+              {!plyCtx.playing ? (
+                <PlayCircleIcon fontSize="large" />
+              ) : (
+                <PauseCircleFilledIcon fontSize="large" />
+              )}
             </button>
           </li>
 
@@ -46,63 +110,24 @@ const Footer = () => {
             </button>
           </li>
           <li>
-            <button>
-              <VolumeUpIcon />
+            <button onClick={plyCtx.onVolumeToggle}>
+              {plyCtx.volume === 0 ? <VolumeOffIcon /> : <VolumeUpIcon />}
             </button>
           </li>
         </ul>
         <div className={classes["volume-duration"]}>
-          <input type="range" />
+          <input
+            type="range"
+            min={0}
+            max={1}
+            step="any"
+            value={plyCtx.volume}
+            onChange={plyCtx.onVolumechange}
+          />
         </div>
       </div>
     </footer>
   );
-  // <section className={classes["player-container"]}>
-  //   <ul className={classes.current}>
-  //     <li>
-  //       <div>imgaaaaaaaaaaaaaaaaa</div>
-  //       <h4>aa</h4>
-  //     </li>
-  //   </ul>
-  //   <div className={classes.player}>
-  //     <div className={classes.range}>
-  //       <input type="range" />
-  //     </div>
-  //     <ul className={classes["player-actions"]}>
-  //       <li>
-  //         <button>
-  //           <SkipPreviousIcon fontSize="large" />
-  //         </button>
-  //       </li>
-  //       <li>
-  //         <button>
-  //           <PlayCircleIcon fontSize="large" />
-  //         </button>
-  //       </li>
-  //       <li>
-  //         <button>
-  //           <SkipNextIcon fontSize="large" />
-  //         </button>
-  //       </li>
-  //     </ul>
-  //   </div>
-
-  //   <ul className={classes.sound}>
-  //     <li>
-  //       <button>
-  //         <DevicesIcon />
-  //       </button>
-  //     </li>
-  //     <li>
-  //       <button>
-  //         <VolumeUpIcon />
-  //       </button>
-  //     </li>
-  //     <li>
-  //       <input type="range" />
-  //     </li>
-  //   </ul>
-  // </section>
 };
 
 export default Footer;
