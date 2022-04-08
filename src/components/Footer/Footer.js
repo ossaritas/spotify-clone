@@ -16,10 +16,13 @@ import Duration from "./Duration";
 const Footer = () => {
   const [url, setUrl] = useState(null);
   const plyCtx = useContext(PlayerContext);
-  useEffect(async () => {
-    const details = await Spotify.getYoutubeSong(plyCtx.searchQ);
-    let { url } = details;
-    setUrl(url);
+  useEffect(() => {
+    const getDetails = async () => {
+      const details = await Spotify.getYoutubeSong(plyCtx.searchQ);
+      let { url } = details;
+      setUrl(url);
+    };
+    getDetails();
   }, [plyCtx.searchQ]);
 
   const seekMouseUp = (e) => {
@@ -31,9 +34,6 @@ const Footer = () => {
   const ref = (playerRef) => {
     player = playerRef;
   };
-  console.log(plyCtx.searchQ);
-  console.log(url);
-  console.log(plyCtx.duration);
 
   return (
     <footer className={classes["footer-container"]}>

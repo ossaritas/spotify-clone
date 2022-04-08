@@ -54,7 +54,7 @@ export const PlayerContextProvider = (props) => {
   const [muted, setMuted] = useState(false);
   const [seeking, setSeeking] = useState(false);
   const [duration, setDuration] = useState(0);
-  const [url, setUrl] = useState("https://www.youtube.com/watch?v=Sv6dMFF_yts");
+  const [url, setUrl] = useState("");
   const [songData, setSongData] = useState({
     artist: "Serdar Sarıtaş",
     song: "My First Project",
@@ -95,7 +95,6 @@ export const PlayerContextProvider = (props) => {
         played: parseFloat(e.target.value),
       };
     });
-    console.log(progress.played);
   };
 
   const handleSeekMouseUp = (e) => {

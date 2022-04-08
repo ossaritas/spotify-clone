@@ -8,10 +8,9 @@ import PlayerContext from "../store/player-context";
 
 const Song = (props) => {
   const plyCtx = useContext(PlayerContext);
-  const getSongData = (aa, bb, cc, dd) => {
-    plyCtx.getSongData(aa, bb, cc, dd);
+  const getSongData = (artist, name, img, nname) => {
+    plyCtx.getSongData(artist, name, img, nname);
     plyCtx.onPlayPause();
-    console.log(dd);
   };
   return (
     <div
