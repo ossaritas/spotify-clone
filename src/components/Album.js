@@ -13,7 +13,6 @@ import { useParams } from "react-router-dom";
 
 const Album = () => {
   const [albums, setAlbums] = useState([]);
-  const [aa, setAa] = useState({});
   const params = useParams();
   const albumId = params.albumId;
   useEffect(() => {
@@ -34,17 +33,6 @@ const Album = () => {
     };
     getDetails();
   }, [albumId]);
-  // useEffect(() => {
-  //   const getDetails = async () => {
-  //     const details = await Spotify.getPlayer();
-
-  //     setAa(details);
-  //   };
-  //   getDetails();
-  // }, []);
-
-  console.log(albums);
-  console.log(aa);
 
   return (
     <MainContainer>

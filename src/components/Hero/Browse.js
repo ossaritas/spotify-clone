@@ -38,8 +38,6 @@ const Browse = () => {
     getLikedSongs();
   }, []);
 
-  console.log(likedSongs);
-
   return (
     <MainContainer>
       <NavBar />

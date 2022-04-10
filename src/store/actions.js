@@ -1,0 +1,10 @@
+export const PLAY = "PLAY";
+export const PLAY_PAUSE = "PLAY_PAUSE";
+export const VOLUME_CHANGED = "VOLUME_CHANGED";
+export const VOLUME_TOGGLE = "VOLUME_TOGGLE";
+export const MOUSE_DOWN = "MOUSE_DOWN";
+export const MOUSE_UP = "MOUSE_UP";
+export const HANDLE_SEEK = "HANDLE_SEEK";
+export const ON_PROGRESS = "ON_PROGRESS";
+export const ON_DURATION = "ON_DURATION";
+export const SONG_DATA = "SONG_DATA";

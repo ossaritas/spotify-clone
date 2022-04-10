@@ -44,10 +44,6 @@ const Artists = () => {
     getAlbums();
   }, [artistsId]);
 
-  console.log(albums);
-  console.log(tracks);
-  console.log(artist);
-
   return (
     <MainContainer>
       <NavButtons />

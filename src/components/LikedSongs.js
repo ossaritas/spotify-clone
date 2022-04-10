@@ -15,7 +15,6 @@ import { useParams } from "react-router-dom";
 
 const LikedSongs = () => {
   const params = useParams();
-  console.log(params);
   const [tracks, setTracks] = useState([]);
 
   useEffect(() => {
@@ -26,8 +25,6 @@ const LikedSongs = () => {
     };
     getDetails();
   }, []);
-
-  console.log(tracks);
 
   return (
     <MainContainer>

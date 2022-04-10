@@ -15,7 +15,6 @@ import { useParams } from "react-router-dom";
 
 const PlaylistElement = () => {
   const params = useParams();
-  console.log(params);
   const trackId = params.trackId;
   const [tracks, setTracks] = useState([]);
   const [img, setImg] = useState([]);

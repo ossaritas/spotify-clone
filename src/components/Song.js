@@ -1,16 +1,37 @@
-import { useContext } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
 import classes from "./Song.module.css";
 import PlayCircleOutlinedIcon from "@mui/icons-material/PlayCircleOutlined";
 import PauseCircleOutlineOutlinedIcon from "@mui/icons-material/PauseCircleOutlineOutlined";
-import PlayerContext from "../store/player-context";
+import { PLAY_PAUSE, SONG_DATA } from "../store/actions";
 
 const Song = (props) => {
-  const plyCtx = useContext(PlayerContext);
-  const getSongData = (artist, name, img, nname) => {
-    plyCtx.getSongData(artist, name, img, nname);
-    plyCtx.onPlayPause();
+  const songData = useSelector((state) => state.songData);
+  const playing = useSelector((state) => state.playing);
+  const dispatch = useDispatch();
+
+  const getSongData = (artist, song, img, id) => {
+    let searchParam = `${artist} ${song}`;
+    const paramsString = encodeURIComponent(searchParam);
+    let mySearchParams = new URLSearchParams(`q=${paramsString}`);
+    let searchQ = new URL(
+      `http://46.101.218.180:2000/api/search?${mySearchParams}`
+    );
+    const searchData = searchQ.href;
+    dispatch({
+      type: SONG_DATA,
+      payload: {
+        searchQ: searchData,
+        songData: {
+          artist: artist,
+          song: song,
+          img: img,
+          id: id,
+        },
+      },
+    });
+    dispatch({ type: PLAY_PAUSE });
   };
   return (
     <div
@@ -26,7 +47,7 @@ const Song = (props) => {
           }
           className={classes["play-button"]}
         >
-          {plyCtx.songData.id === props.name && plyCtx.playing ? (
+          {songData.id === props.name && playing ? (
             <PauseCircleOutlineOutlinedIcon
               style={{ color: "#04aa6d", width: "32px", height: "32px" }}
             />

@@ -1,4 +1,4 @@
-import { useEffect, useState, useContext } from "react";
+import { useEffect, useState } from "react";
 import classes from "./Footer.module.css";
 import PlayCircleIcon from "@mui/icons-material/PlayCircle";
 import PauseCircleFilledIcon from "@mui/icons-material/PauseCircleFilled";
@@ -8,31 +8,96 @@ import VolumeUpIcon from "@mui/icons-material/VolumeUp";
 import VolumeOffIcon from "@mui/icons-material/VolumeOff";
 import DevicesIcon from "@mui/icons-material/Devices";
 
+import {
+  HANDLE_SEEK,
+  MOUSE_DOWN,
+  MOUSE_UP,
+  ON_DURATION,
+  ON_PROGRESS,
+  PLAY,
+  PLAY_PAUSE,
+  VOLUME_CHANGED,
+  VOLUME_TOGGLE,
+} from "../../store/actions";
 import ReactPlayer from "react-player/youtube";
-import PlayerContext from "../../store/player-context";
 import Spotify from "../../store/Spotify";
 import Duration from "./Duration";
+import { useDispatch, useSelector } from "react-redux";
 
 const Footer = () => {
-  const [url, setUrl] = useState(null);
-  const plyCtx = useContext(PlayerContext);
-  useEffect(() => {
-    const getDetails = async () => {
-      const details = await Spotify.getYoutubeSong(plyCtx.searchQ);
-      let { url } = details;
-      setUrl(url);
-    };
-    getDetails();
-  }, [plyCtx.searchQ]);
-
-  const seekMouseUp = (e) => {
-    plyCtx.onMouseUp();
-    player.seekTo(parseFloat(e.target.value), "fraction");
-  };
+  const isPlaying = useSelector((state) => state.playing);
+  const songData = useSelector((state) => state.songData);
+  const volume = useSelector((state) => state.volume);
+  const muted = useSelector((state) => state.muted);
+  const progress = useSelector((state) => state.progress);
+  const seeking = useSelector((state) => state.seeking);
+  const duration = useSelector((state) => state.duration);
+  const searchQ = useSelector((state) => state.searchQ);
+  const dispatch = useDispatch();
 
   let player;
   const ref = (playerRef) => {
     player = playerRef;
+  };
+
+  const [url, setUrl] = useState(null);
+  useEffect(() => {
+    const getDetails = async () => {
+      const details = await Spotify.getYoutubeSong(searchQ);
+      let { url } = details;
+      setUrl(url);
+    };
+    getDetails();
+  }, [searchQ]);
+
+  const playHandler = () => {
+    dispatch({ type: PLAY });
+  };
+  const playPauseHandler = () => {
+    dispatch({ type: PLAY_PAUSE });
+  };
+  const volumeHandler = (e) => {
+    if (volume > 0) {
+      dispatch({
+        type: VOLUME_CHANGED,
+        payload: { value: parseFloat(e.target.value), muted: false },
+      });
+    } else {
+      dispatch({
+        type: VOLUME_CHANGED,
+        payload: { value: parseFloat(e.target.value), muted: true },
+      });
+    }
+  };
+  const volumeMuteHandler = () => {
+    if (volume > 0) {
+      dispatch({ type: VOLUME_TOGGLE, payload: { value: 0, muted: true } });
+    } else {
+      dispatch({ type: VOLUME_TOGGLE, payload: { value: 0.5, muted: false } });
+    }
+  };
+  const seekMouseUp = (e) => {
+    dispatch({ type: MOUSE_DOWN });
+    player.seekTo(parseFloat(e.target.value), "fraction");
+  };
+  const seekMouseDown = () => {
+    dispatch({ type: MOUSE_UP });
+  };
+  const seekHandler = (e) => {
+    dispatch({
+      type: HANDLE_SEEK,
+      payload: { played: parseFloat(e.target.value) },
+    });
+  };
+
+  const progressHandler = (progress) => {
+    if (!seeking) {
+      dispatch({ type: ON_PROGRESS, payload: { progress } });
+    }
+  };
+
+  const durationHandler = (duration) => {
+    dispatch({ type: ON_DURATION, payload: { duration } });
   };
 
   return (
@@ -41,41 +106,42 @@ const Footer = () => {
         <ReactPlayer
           ref={ref}
           url={url}
-          volume={plyCtx.volume}
+          volume={volume}
           width={0}
           height={0}
-          playing={plyCtx.playing}
-          muted={plyCtx.muted}
-          onSeek={() => plyCtx.onHandleSeek}
-          onPlay={() => plyCtx.onPlay}
-          onProgress={plyCtx.onProgress}
-          onDuration={plyCtx.onDuration}
+          playing={isPlaying}
+          muted={muted}
+          onSeek={(e) => console.log("onSeek", e)}
+          onPlay={() => playHandler}
+          onProgress={progressHandler}
+          onDuration={durationHandler}
+          onError={(e) => console.log("onError", e)}
         />
 
         <div className={classes["img-container"]}>
-          <img src={plyCtx.songData.img} alt="" />
+          <img src={songData.img} alt="" />
         </div>
         <p>
-          {plyCtx.songData.artist} _ {plyCtx.songData.song}
+          {songData.artist} _ {songData.song}
         </p>
       </div>
       <div className={classes.player}>
         <div>
           <Duration
             className={classes.duration}
-            seconds={plyCtx.progress.playedSeconds}
+            seconds={progress.playedSeconds}
           />
           <input
-            onMouseDown={plyCtx.onMouseDown}
+            onMouseDown={seekMouseDown}
             onMouseUp={seekMouseUp}
-            onChange={plyCtx.onHandleSeek}
+            onChange={seekHandler}
             type="range"
             min={0}
             max={1}
             step="any"
-            value={plyCtx.progress.played}
+            value={progress.played}
           />
-          <Duration className={classes.duration} seconds={plyCtx.duration} />
+          <Duration className={classes.duration} seconds={duration} />
         </div>
 
         <ul className={classes["player-actions"]}>
@@ -86,8 +152,8 @@ const Footer = () => {
           </li>
 
           <li>
-            <button onClick={plyCtx.onPlayPause}>
-              {!plyCtx.playing ? (
+            <button onClick={playPauseHandler}>
+              {!isPlaying ? (
                 <PlayCircleIcon fontSize="large" />
               ) : (
                 <PauseCircleFilledIcon fontSize="large" />
@@ -110,8 +176,8 @@ const Footer = () => {
             </button>
           </li>
           <li>
-            <button onClick={plyCtx.onVolumeToggle}>
-              {plyCtx.volume === 0 ? <VolumeOffIcon /> : <VolumeUpIcon />}
+            <button onClick={volumeMuteHandler}>
+              {volume === 0 ? <VolumeOffIcon /> : <VolumeUpIcon />}
             </button>
           </li>
         </ul>
@@ -121,8 +187,8 @@ const Footer = () => {
             min={0}
             max={1}
             step="any"
-            value={plyCtx.volume}
-            onChange={plyCtx.onVolumechange}
+            value={volume}
+            onChange={volumeHandler}
           />
         </div>
       </div>
