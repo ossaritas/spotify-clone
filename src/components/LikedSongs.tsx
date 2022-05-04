@@ -10,12 +10,27 @@ import MainContainer from "./Hero/MainContainer";
 import NavButtons from "./Hero/NavButtons";
 import Song from "./Song";
 
-import Spotify from "../store/Spotify";
-import { useParams } from "react-router-dom";
+import Spotify from "../Spotify/Spotify";
 
+type Tracks = {
+  track: {
+    album: {
+      id: string;
+      images: { height: number; url: string; width: number }[];
+      name: string;
+    };
+    artists: {
+      id: string;
+      name: string;
+    }[];
+
+    id: string;
+
+    name: string;
+  };
+};
 const LikedSongs = () => {
-  const params = useParams();
-  const [tracks, setTracks] = useState([]);
+  const [tracks, setTracks] = useState<Tracks[]>([]);
 
   useEffect(() => {
     const getDetails = async () => {
@@ -25,7 +40,6 @@ const LikedSongs = () => {
     };
     getDetails();
   }, []);
-
   return (
     <MainContainer>
       <NavButtons />

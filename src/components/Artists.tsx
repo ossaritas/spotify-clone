@@ -1,48 +1,83 @@
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect } from "react";
 
-import Spotify from "../store/Spotify";
+import Spotify from "../Spotify/Spotify";
 import Song from "./Song";
 import Card from "./UI/Card";
 import NavButtons from "./Hero/NavButtons";
 import CustomIcon from "./UI/CustomIcon";
 import MainContainer from "./Hero/MainContainer";
 import PlayCircleFilledIcon from "@mui/icons-material/PlayCircleFilled";
-import FavoriteBorderRoundedIcon from "@mui/icons-material/FavoriteBorderRounded";
 
 import classes from "./Artists.module.css";
 import { useParams } from "react-router-dom";
+import { Image } from "../Spotify/interfaces";
+
+type Artist = {
+  name: string;
+  cover: string;
+  type: string;
+};
+
+type ArtistTracks = {
+  tracks: {
+    album: {
+      id: string;
+      images: { height: number; url: string; width: number }[];
+      name: string;
+    };
+    artists: {
+      id: string;
+      name: string;
+    }[];
+
+    id: string;
+
+    name: string;
+  }[];
+};
+
+type ArtistAlbums = {
+  items: {
+    available_markets: string;
+    id: string;
+    images: Image[];
+    name: string;
+    release_date: string;
+    type: string;
+  }[];
+};
 
 const Artists = () => {
-  const [albums, setAlbums] = useState([]);
-  const [tracks, setTracks] = useState([]);
-  const [artist, setArtist] = useState([]);
-  const params = useParams();
-  const artistsId = params.artistsId;
+  const params = useParams() as { artistsId: string };
+  const [albums, setAlbums] = useState<ArtistAlbums>();
+  const [tracks, setTracks] = useState<ArtistTracks>();
+  const [artist, setArtist] = useState<Artist>();
+
   useEffect(() => {
     const getDetails = async () => {
-      const details = await Spotify.getArtist(artistsId);
+      const details = await Spotify.getArtist(params.artistsId);
       let { name } = details;
-      let followers = details.followers.total;
       let type = details.type;
       let cover = details.images[1].url;
 
-      setArtist({ name, cover, followers, type });
+      setArtist({ name, cover, type });
     };
     const getTopTracks = async () => {
-      const details = await Spotify.getArtistsTopTracks(artistsId);
+      const details = await Spotify.getArtistsTopTracks(params.artistsId);
       let { tracks } = details;
 
       setTracks({ tracks });
     };
     const getAlbums = async () => {
-      const details = await Spotify.getArtistsAlbums(artistsId);
+      const details = await Spotify.getArtistsAlbums(params.artistsId);
+      let items = details.items;
 
-      setAlbums(details);
+      setAlbums({ items });
     };
     getDetails();
     getTopTracks();
     getAlbums();
-  }, [artistsId]);
+  }, [params.artistsId]);
 
   return (
     <MainContainer>
@@ -50,11 +85,11 @@ const Artists = () => {
       <section className={classes.container}>
         <div className={classes.header}>
           <div className={classes["image-container"]}>
-            <img src={artist.cover} alt="rep" />
+            <img src={artist ? artist.cover : undefined} alt="rep" />
           </div>
           <div className={classes.info}>
-            <span>{artist.type}</span>
-            <p>{artist.name}</p>
+            <span>{artist ? artist.type : null}</span>
+            <p>{artist ? artist.name : null}</p>
           </div>
         </div>
         <div className={classes.list}>
@@ -70,7 +105,7 @@ const Artists = () => {
             <div className={classes.title}>Popular</div>
             <p className={classes.divider}></p>
             <div className={classes["track-container"]}>
-              {tracks.tracks
+              {tracks
                 ? tracks.tracks.map((item) => (
                     <Song
                       key={item.id}
@@ -85,9 +120,10 @@ const Artists = () => {
             <div className={classes.title}>Albums</div>
             <p className={classes.divider}></p>
             <div className={classes["browse-container"]}>
-              {albums.items
-                ? albums.items.map((item) => {
-                    if (item.available_markets.length > 80) {
+              {albums
+                ? albums.items
+                    .filter((item) => item.available_markets.length > 80)
+                    .map((item) => {
                       return (
                         <Card
                           id={item.id}
@@ -95,11 +131,10 @@ const Artists = () => {
                           img={item.images[0].url}
                           title={item.name}
                           key={item.id}
-                          type="album"
+                          type={item.type}
                         />
                       );
-                    }
-                  })
+                    })
                 : null}
             </div>
           </div>

@@ -1,22 +1,21 @@
 import classes from "./NavButtons.module.css";
-import { useNavigate } from "react-router-dom";
-import CustomIcon from "../UI/CustomIcon";
+import { NavigateFunction, useNavigate } from "react-router-dom";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 
 const NavButtons = () => {
-  const navigate = useNavigate();
+  const navigate: NavigateFunction = useNavigate();
   return (
     <div className={classes.navbar}>
       <ul className={classes["nav-items"]}>
         <li>
           <button onClick={() => navigate(-1)}>
-            <ArrowBackIosNewIcon style={{ width: "30px", height: "30px" }} />
+            <ArrowBackIosNewIcon style={{ width: "25px", height: "25px" }} />
           </button>
         </li>
         <li>
           <button onClick={() => navigate(1)}>
-            <ArrowForwardIosIcon style={{ width: "30px", height: "30px" }} />
+            <ArrowForwardIosIcon style={{ width: "25px", height: "25px" }} />
           </button>
         </li>
       </ul>

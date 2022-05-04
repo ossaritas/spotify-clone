@@ -1,17 +1,35 @@
 import { useEffect, useState } from "react";
-import Spotify from "../../store/Spotify";
+import Spotify from "../../Spotify/Spotify";
 
 import MainContainer from "./MainContainer";
 import NavBar from "./NavBar";
 import classes from "./Browse.module.css";
 import Card from "../UI/Card";
 import { Routes, Route } from "react-router-dom";
+import { Image } from "../../Spotify/interfaces";
+
+type BrowsePlaylist = {
+  message: string;
+  items: {
+    description: string;
+    id: string;
+    images: Image[];
+    name: string;
+    owner: { display_name: string };
+  }[];
+};
+
+type BrowseFeaturedAlbums = {
+  available_markets: string[];
+  id: string;
+  images: Image[];
+  name: string;
+  release_date: string;
+};
 
 const Browse = () => {
-  const [playList, setPlayList] = useState([]);
-  const [newRelease, setNewRelease] = useState([]);
-  const [likedSongs, setLikedSongs] = useState([]);
-
+  const [playList, setPlayList] = useState<BrowsePlaylist>();
+  const [newRelease, setNewRelease] = useState<BrowseFeaturedAlbums[]>([]);
   useEffect(() => {
     const getFeaturedPlaylists = async () => {
       const playList = await Spotify.getFeaturedPlaylists();
@@ -24,32 +42,23 @@ const Browse = () => {
   useEffect(() => {
     const getFeaturedAlbums = async () => {
       const details = await Spotify.getNewReleases();
-      let items = details.albums;
+      let items = details.albums.items;
       setNewRelease(items);
     };
     getFeaturedAlbums();
-  }, []);
-  useEffect(() => {
-    const getLikedSongs = async () => {
-      const details = await Spotify.getLikedSongs();
-      let items = details.albums;
-      setLikedSongs(details);
-    };
-    getLikedSongs();
   }, []);
 
   return (
     <MainContainer>
       <NavBar />
-
       <Routes>
         <Route
           path="/playlist"
           element={
             <div className={classes.browse}>
-              <span>{playList.message}</span>
+              <span>{playList ? playList.message : null}</span>
               <div className={classes["browse-container"]}>
-                {playList.items
+                {playList
                   ? playList.items.map((item) => (
                       <Card
                         id={item.id}
@@ -69,11 +78,12 @@ const Browse = () => {
           path="/albums"
           element={
             <div className={classes.browse}>
-              <span>{playList.message}</span>
+              <span>{playList ? playList.message : null}</span>
               <div className={classes["browse-container"]}>
-                {newRelease.items
-                  ? newRelease.items.map((item) => {
-                      if (item.available_markets.length > 80) {
+                {newRelease
+                  ? newRelease
+                      .filter((item) => item.available_markets.length > 80)
+                      .map((item) => {
                         return (
                           <Card
                             id={item.id}
@@ -84,8 +94,7 @@ const Browse = () => {
                             type="album"
                           />
                         );
-                      }
-                    })
+                      })
                   : null}
               </div>
             </div>
@@ -95,8 +104,15 @@ const Browse = () => {
         <Route
           path="*"
           element={
-            <h3 style={{ padding: "200px", fontSize: "50px" }}>
-              WELCOME TO SPOTIFY CLONE FEEL FREE TO MOVE AROUND
+            <h3
+              style={{
+                color: "darkgrey",
+                padding: "200px",
+                fontSize: "30px",
+                fontStyle: "italic",
+              }}
+            >
+              WELCOME TO SPOTIFY CLONE, by O.Serdar Saritas.
             </h3>
           }
         />

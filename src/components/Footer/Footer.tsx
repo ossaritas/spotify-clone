@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import classes from "./Footer.module.css";
 import PlayCircleIcon from "@mui/icons-material/PlayCircle";
 import PauseCircleFilledIcon from "@mui/icons-material/PauseCircleFilled";
@@ -8,39 +8,30 @@ import VolumeUpIcon from "@mui/icons-material/VolumeUp";
 import VolumeOffIcon from "@mui/icons-material/VolumeOff";
 import DevicesIcon from "@mui/icons-material/Devices";
 
-import {
-  HANDLE_SEEK,
-  MOUSE_DOWN,
-  MOUSE_UP,
-  ON_DURATION,
-  ON_PROGRESS,
-  PLAY,
-  PLAY_PAUSE,
-  VOLUME_CHANGED,
-  VOLUME_TOGGLE,
-} from "../../store/actions";
 import ReactPlayer from "react-player/youtube";
-import Spotify from "../../store/Spotify";
+import Spotify from "../../Spotify/Spotify";
 import Duration from "./Duration";
 import { useDispatch, useSelector } from "react-redux";
+import { playerActions } from "../../store/player-slice";
+import { RootState } from "../../store";
 
 const Footer = () => {
-  const isPlaying = useSelector((state) => state.playing);
-  const songData = useSelector((state) => state.songData);
-  const volume = useSelector((state) => state.volume);
-  const muted = useSelector((state) => state.muted);
-  const progress = useSelector((state) => state.progress);
-  const seeking = useSelector((state) => state.seeking);
-  const duration = useSelector((state) => state.duration);
-  const searchQ = useSelector((state) => state.searchQ);
+  const isPlaying = useSelector((state: RootState) => state.playing);
+  const songData = useSelector((state: RootState) => state.songData);
+  const volume = useSelector((state: RootState) => state.volume);
+  const muted = useSelector((state: RootState) => state.muted);
+  const progress = useSelector((state: RootState) => state.progress);
+  const seeking = useSelector((state: RootState) => state.seeking);
+  const duration = useSelector((state: RootState) => state.duration);
+  const searchQ = useSelector((state: RootState) => state.searchQ);
   const dispatch = useDispatch();
 
-  let player;
-  const ref = (playerRef) => {
+  let player: any;
+  const ref = (playerRef: any) => {
     player = playerRef;
   };
 
-  const [url, setUrl] = useState(null);
+  const [url, setUrl] = useState<string>();
   useEffect(() => {
     const getDetails = async () => {
       const details = await Spotify.getYoutubeSong(searchQ);
@@ -50,56 +41,45 @@ const Footer = () => {
     getDetails();
   }, [searchQ]);
 
-  const playHandler = () => {
-    dispatch({ type: PLAY });
-  };
-  const playPauseHandler = () => {
-    dispatch({ type: PLAY_PAUSE });
-  };
-  const volumeHandler = (e) => {
+  const volumeHandler = (event: ChangeEvent<HTMLInputElement>) => {
     if (volume > 0) {
-      dispatch({
-        type: VOLUME_CHANGED,
-        payload: { value: parseFloat(e.target.value), muted: false },
-      });
+      dispatch(
+        playerActions.onVolumeChange({
+          value: parseFloat(event.target.value),
+          muted: false,
+        })
+      );
     } else {
-      dispatch({
-        type: VOLUME_CHANGED,
-        payload: { value: parseFloat(e.target.value), muted: true },
-      });
+      dispatch(
+        playerActions.onVolumeChange({
+          value: parseFloat(event.target.value),
+          muted: true,
+        })
+      );
     }
   };
   const volumeMuteHandler = () => {
     if (volume > 0) {
-      dispatch({ type: VOLUME_TOGGLE, payload: { value: 0, muted: true } });
+      dispatch(playerActions.onVolumeChange({ value: 0, muted: true }));
     } else {
-      dispatch({ type: VOLUME_TOGGLE, payload: { value: 0.5, muted: false } });
+      dispatch(playerActions.onVolumeChange({ value: 0.5, muted: false }));
     }
   };
-  const seekMouseUp = (e) => {
-    dispatch({ type: MOUSE_DOWN });
-    player.seekTo(parseFloat(e.target.value), "fraction");
-  };
-  const seekMouseDown = () => {
-    dispatch({ type: MOUSE_UP });
-  };
-  const seekHandler = (e) => {
-    dispatch({
-      type: HANDLE_SEEK,
-      payload: { played: parseFloat(e.target.value) },
-    });
+  const seekHandler = (event: ChangeEvent<HTMLInputElement>) => {
+    dispatch(
+      playerActions.onHandleSeek({ played: parseFloat(event.target.value) })
+    );
+    player.seekTo(parseFloat(event.target.value), "fraction");
   };
 
-  const progressHandler = (progress) => {
+  const progressHandler = () => {
     if (!seeking) {
-      dispatch({ type: ON_PROGRESS, payload: { progress } });
+      dispatch(playerActions.onProgress({ progress }));
+    }
+    if (progress.played >= 0.997) {
+      dispatch(playerActions.onHandleEnd());
     }
   };
-
-  const durationHandler = (duration) => {
-    dispatch({ type: ON_DURATION, payload: { duration } });
-  };
-
   return (
     <footer className={classes["footer-container"]}>
       <div className={classes.info}>
@@ -112,9 +92,12 @@ const Footer = () => {
           playing={isPlaying}
           muted={muted}
           onSeek={(e) => console.log("onSeek", e)}
-          onPlay={() => playHandler}
+          onPlay={() => dispatch(playerActions.onPlay())}
+          onEnded={() => dispatch(playerActions.onHandleEnd())}
           onProgress={progressHandler}
-          onDuration={durationHandler}
+          onDuration={(duration) =>
+            dispatch(playerActions.onDuration({ duration }))
+          }
           onError={(e) => console.log("onError", e)}
         />
 
@@ -122,7 +105,7 @@ const Footer = () => {
           <img src={songData.img} alt="" />
         </div>
         <p>
-          {songData.artist} _ {songData.song}
+          {songData.artist} -- {songData.song}
         </p>
       </div>
       <div className={classes.player}>
@@ -132,8 +115,8 @@ const Footer = () => {
             seconds={progress.playedSeconds}
           />
           <input
-            onMouseDown={seekMouseDown}
-            onMouseUp={seekMouseUp}
+            onMouseDown={() => dispatch(playerActions.onMouseUp())}
+            onMouseUp={() => dispatch(playerActions.onMouseDown())}
             onChange={seekHandler}
             type="range"
             min={0}
@@ -152,7 +135,7 @@ const Footer = () => {
           </li>
 
           <li>
-            <button onClick={playPauseHandler}>
+            <button onClick={() => dispatch(playerActions.onPlayPause())}>
               {!isPlaying ? (
                 <PlayCircleIcon fontSize="large" />
               ) : (

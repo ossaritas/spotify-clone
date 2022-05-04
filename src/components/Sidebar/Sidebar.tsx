@@ -1,5 +1,5 @@
 import classes from "./Sidebar.module.css";
-import Element from "../Elements/Element";
+import Element, { OptionsType } from "../Elements/Element";
 import { Link } from "react-router-dom";
 
 import logo from "../../assests/spLogo.png";
@@ -8,8 +8,12 @@ import SearchIcon from "@mui/icons-material/Search";
 import LibraryMusicIcon from "@mui/icons-material/LibraryMusic";
 import PlayList from "./Playlist";
 
-const homeOptions = [
-  { title: "Home", link: "/", icon: <HomeIcon className={classes.icon} /> },
+const homeOptions: OptionsType[] = [
+  {
+    title: "Home",
+    link: "/",
+    icon: <HomeIcon className={classes.icon} />,
+  },
   { title: "Search", link: "/search", icon: <SearchIcon /> },
   { title: "Liked Songs", link: "/liked", icon: <LibraryMusicIcon /> },
 ];
