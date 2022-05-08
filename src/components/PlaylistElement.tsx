@@ -10,16 +10,35 @@ import MainContainer from "./Hero/MainContainer";
 import NavButtons from "./Hero/NavButtons";
 import Song from "./Song";
 
-import Spotify from "../store/Spotify";
+import Spotify from "../Spotify/Spotify";
 import { useParams } from "react-router-dom";
 
+type TrackType = {
+  items: {
+    track: {
+      album: {
+        id: string;
+        images: { height: number; url: string; width: number }[];
+        name: string;
+      };
+      artists: {
+        id: string;
+        name: string;
+      }[];
+      id: string;
+      name: string;
+    };
+  }[];
+};
+
 const PlaylistElement = () => {
-  const params = useParams();
-  console.log(params);
-  const trackId = params.trackId;
-  const [tracks, setTracks] = useState([]);
-  const [img, setImg] = useState([]);
-  const [details, setDetails] = useState([]);
+  const { trackId } = useParams() as { trackId: string };
+  const [tracks, setTracks] = useState<TrackType>();
+  const [img, setImg] = useState<string>();
+  const [details, setDetails] = useState<{
+    name: string;
+    description: string;
+  }>();
 
   useEffect(() => {
     const getDetails = async () => {
@@ -51,8 +70,8 @@ const PlaylistElement = () => {
             >
               Playlist
             </span>
-            <p>{details.name}</p>
-            <span>{details.description}</span>
+            <p>{details ? details.name : null}</p>
+            <span>{details ? details.description : null}</span>
           </div>
         </div>
         <div className={classes.list}>
@@ -77,7 +96,7 @@ const PlaylistElement = () => {
               <li>Album</li>
             </ul>
             <p className={classes.divider}></p>
-            {tracks.items
+            {tracks
               ? tracks.items.map((item) => (
                   <Song
                     key={item.track.id}

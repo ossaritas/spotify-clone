@@ -1,6 +1,6 @@
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect } from "react";
 
-import Spotify from "../store/Spotify";
+import Spotify from "../Spotify/Spotify";
 import Song from "./Song";
 import NavButtons from "./Hero/NavButtons";
 import CustomIcon from "./UI/CustomIcon";
@@ -10,19 +10,18 @@ import FavoriteBorderRoundedIcon from "@mui/icons-material/FavoriteBorderRounded
 
 import classes from "./Album.module.css";
 import { useParams } from "react-router-dom";
+import { AlbumType } from "../Spotify/interfaces";
 
 const Album = () => {
-  const [albums, setAlbums] = useState([]);
-  const [aa, setAa] = useState({});
-  const params = useParams();
-  const albumId = params.albumId;
+  const [albums, setAlbums] = useState<AlbumType>();
+  const { albumId } = useParams() as { albumId: string };
+  console.log(albums);
   useEffect(() => {
     const getDetails = async () => {
       const details = await Spotify.getAlbums(albumId);
       let { name, label, release_date, total_tracks } = details;
       let cover = details.images[1].url;
       let items = details.tracks.items;
-
       setAlbums({
         name,
         cover,
@@ -34,17 +33,6 @@ const Album = () => {
     };
     getDetails();
   }, [albumId]);
-  // useEffect(() => {
-  //   const getDetails = async () => {
-  //     const details = await Spotify.getPlayer();
-
-  //     setAa(details);
-  //   };
-  //   getDetails();
-  // }, []);
-
-  console.log(albums);
-  console.log(aa);
 
   return (
     <MainContainer>
@@ -52,13 +40,13 @@ const Album = () => {
       <section className={classes.container}>
         <div className={classes.header}>
           <div className={classes["image-container"]}>
-            <img src={albums.cover} alt="rep" />
+            <img src={albums ? albums.cover : undefined} alt="rep" />
           </div>
           <div className={classes.info}>
-            <p>{albums.name}</p>
-            <span>Label: {albums.label}</span>
-            <span>Release Date: {albums.release_date}</span>
-            <span>Total Tracks: {albums.total_tracks}</span>
+            <p>{albums ? albums.name : null}</p>
+            <span>Label: {albums ? albums.label : null}</span>
+            <span>Release Date: {albums ? albums.release_date : null}</span>
+            <span>Total Tracks: {albums ? albums.total_tracks : null}</span>
           </div>
         </div>
         <div className={classes.list}>
@@ -83,7 +71,7 @@ const Album = () => {
             </ul>
             <p className={classes.divider}></p>
             <div className={classes["track-container"]}>
-              {albums.items
+              {albums
                 ? albums.items.map((item) => (
                     <Song
                       className={classes["album-tracks"]}

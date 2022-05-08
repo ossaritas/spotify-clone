@@ -1,16 +1,18 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { PlaylistItems } from "../../Spotify/interfaces";
 
-import Spotify from "../../store/Spotify";
+import Spotify from "../../Spotify/Spotify";
 import classes from "./Playlist.module.css";
 
 const PlayList = () => {
-  const [playList, setplayList] = useState([]);
+  const [playList, setplayList] = useState<PlaylistItems[]>([]);
 
   useEffect(() => {
     const getPlaylist = async () => {
       const playList = await Spotify.getPlayList();
-      setplayList(playList.items);
+      const items = playList.items;
+      setplayList(items);
     };
     getPlaylist();
   }, []);

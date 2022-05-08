@@ -4,14 +4,14 @@ import "./index.css";
 import App from "./App";
 
 import { BrowserRouter } from "react-router-dom";
-
-import { PlayerContextProvider } from "./store/player-context";
+import { Provider } from "react-redux";
+import store from "./store/index";
 
 ReactDOM.render(
   <BrowserRouter>
-    <PlayerContextProvider>
+    <Provider store={store}>
       <App />
-    </PlayerContextProvider>
+    </Provider>
   </BrowserRouter>,
   document.getElementById("root")
 );

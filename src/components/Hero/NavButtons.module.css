@@ -17,18 +17,13 @@
 .nav-items {
   display: flex;
 }
-
-.ply {
-  width: 75px;
-  height: 75px;
-}
-.ply > button {
-  color: #1db954;
+.nav-items > li {
+  margin: 5px;
 }
 
 .nav-items > li > button {
-  width: 50px;
-  height: 50px;
+  width: 40px;
+  height: 40px;
   border-radius: 100px;
-  color: white;
+  color: rgb(69, 69, 69);
 }

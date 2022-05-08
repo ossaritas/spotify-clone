@@ -56,7 +56,7 @@ const Spotify = {
   }, */
 
   // Get user Id of logged in account user.
-  async getUserId(token) {
+  async getUserId(token: string) {
     const headers = {
       Authorization: `Bearer ${token}`,
     };
@@ -112,7 +112,7 @@ const Spotify = {
     return jsonResponse;
   },
 
-  async getTracks(id) {
+  async getTracks(id: string) {
     const token = this.getAccessToken();
 
     const userId = await this.getUserId(token);
@@ -148,7 +148,7 @@ const Spotify = {
     return jsonResponse;
   },
 
-  async getCategoryPlaylists(id) {
+  async getCategoryPlaylists(id: string) {
     const token = this.getAccessToken();
     const headers = {
       Authorization: `Bearer ${token}`,
@@ -172,7 +172,7 @@ const Spotify = {
       "content-type": "application/json",
     };
     const response = await fetch(
-      `https://api.spotify.com/v1/browse/featured-playlists`,
+      `https://api.spotify.com/v1/browse/featured-playlists?country=US`,
       {
         headers: headers,
         method: "GET",
@@ -189,7 +189,7 @@ const Spotify = {
       "content-type": "application/json",
     };
     const response = await fetch(
-      `https://api.spotify.com/v1/browse/new-releases`,
+      `https://api.spotify.com/v1/browse/new-releases?country=US`,
       {
         headers: headers,
         method: "GET",
@@ -199,7 +199,7 @@ const Spotify = {
     return jsonResponse;
   },
 
-  async getAlbums(id) {
+  async getAlbums(id: string) {
     const token = this.getAccessToken();
     const headers = {
       Authorization: `Bearer ${token}`,
@@ -214,7 +214,7 @@ const Spotify = {
     return jsonResponse;
   },
 
-  async getPlaylistDetails(id) {
+  async getPlaylistDetails(id: string) {
     const token = this.getAccessToken();
     const headers = {
       Authorization: `Bearer ${token}`,
@@ -228,7 +228,7 @@ const Spotify = {
     return jsonResponse;
   },
 
-  async getArtist(id) {
+  async getArtist(id: string) {
     const token = this.getAccessToken();
     const headers = {
       Authorization: `Bearer ${token}`,
@@ -242,7 +242,7 @@ const Spotify = {
     return jsonResponse;
   },
 
-  async getArtistsTopTracks(id) {
+  async getArtistsTopTracks(id: string) {
     const token = this.getAccessToken();
     const headers = {
       Authorization: `Bearer ${token}`,
@@ -259,7 +259,7 @@ const Spotify = {
     return jsonResponse;
   },
 
-  async getArtistsAlbums(id) {
+  async getArtistsAlbums(id: string) {
     const token = this.getAccessToken();
     const headers = {
       Authorization: `Bearer ${token}`,
@@ -320,33 +320,29 @@ const Spotify = {
     const jsonResponse = await response.json();
     return jsonResponse;
   },
-  async getYoutubeSong(url) {
+  async getYoutubeSong(url: string) {
     const response = await fetch(`${url}`);
     const jsonResponse = await response.json();
     return jsonResponse;
   },
 
-  // Add tracks to an existing playlist.
-  /*   async addTracks(token, userId, playlistID, trackURIs) {
+  async getSearch(searchF: string) {
+    const token = this.getAccessToken();
     const headers = {
       Authorization: `Bearer ${token}`,
-      "content-type": "application/json"
+      "content-type": "application/json",
     };
     const response = await fetch(
-      `https://api.spotify.com/v1/users/${userId}/playlists/${playlistID}/tracks`,
+      `https://api.spotify.com/v1/search?q=${searchF}&type=track%2Cartist&market=US
+    `,
       {
-        body: JSON.stringify(trackURIs),
         headers: headers,
-        method: "POST"
+        method: "GET",
       }
     );
     const jsonResponse = await response.json();
-    if (jsonResponse && jsonResponse.snapshot_id) {
-      console.log("tracks added successfully");
-      return true;
-    }
-    return false;
-  } */
+    return jsonResponse;
+  },
 };
 
 export default Spotify;

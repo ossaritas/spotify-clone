@@ -2,11 +2,22 @@ import { PlayArrowRounded } from "@mui/icons-material";
 import { Link } from "react-router-dom";
 import classes from "./Card.module.css";
 
-const Card = (props) => {
+const Card = (props: {
+  className?: string;
+  img: string;
+  title?: string;
+  description?: string;
+  type: string;
+  id: string;
+}) => {
   return (
-    <div className={classes["card-container"]}>
+    <div
+      className={`${classes["card-container"]} ${
+        props.className ? props.className : ""
+      }`}
+    >
       <img className={classes.img} src={props.img} alt="Cover" />
-      <span className={classes.title} title="EMINEM BEST OF">
+      <span className={classes.title}>
         <span>{props.title}</span>
       </span>
       <div className={classes.description}>

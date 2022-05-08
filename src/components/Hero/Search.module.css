@@ -1,21 +1,111 @@
 .search {
-  background-color: tomato;
-  height: 100%;
-}
+  width: 100%;
+  height: 70px;
+  top: 0;
 
-.search-nav {
-  padding: 10px 20px 10px 20px;
-  background-color: violet;
   display: flex;
+  align-items: center;
+
+  background-image: linear-gradient(
+    to bottom left,
+    rgba(0, 0, 0, 0.5),
+    rgb(0, 0, 0)
+  );
+  color: white;
+}
+.icon {
+  margin-left: 15px;
 }
 
-.search-nav > input {
+.search > label {
+  display: flex;
+  align-items: center;
+}
+
+.search > label > input {
+  width: 200px;
+  height: 30px;
+  border-radius: 20px;
+  border: 0px;
+  margin: 0 0 0 15px;
+  padding: 0 0 0 5px;
+  transition: ease-in-out, width 0.35s ease-in-out;
+  font-weight: 400;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.search > label > input:focus {
   width: 360px;
-  height: 40px;
-  cursor: text;
-  display: inline-block;
-  box-shadow: none;
-  border-radius: 50px;
-  font-size: 14px;
-  text-decoration: none solid rgb(0, 0, 0);
+  outline: none;
+  padding-left: 8px;
+  font-size: 18px;
+  font-weight: 500;
+  font-style: italic;
+}
+
+.browse {
+  margin-top: 10px;
+  width: 100%;
+  height: auto;
+  display: grid;
+}
+
+.browse > span {
+  font-size: 30px;
+  text-align: center;
+  padding: 0;
+  margin-top: 5px;
+}
+
+.browse-container {
+  padding: 15px;
+  display: grid;
+  grid-gap: 16px;
+  grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+  grid-template-rows: auto;
+}
+
+.artists {
+  padding: 7px !important;
+  height: 200px !important;
+  transition: all 0.3s;
+}
+.artists > span {
+  text-align: center;
+}
+.artists:hover {
+  height: 250px !important;
+}
+
+.artists > img {
+  border-radius: 100px;
+  backface-visibility: hidden;
+}
+.artists > div {
+  align-items: baseline;
+  justify-content: center;
+}
+.artists > div > button > a > svg {
+  color: #1db954 !important;
+  background-color: #fff;
+}
+
+.list {
+  padding: 10px;
+}
+
+.title {
+  display: grid;
+  grid-template-columns: 0.1fr 1fr 1fr 1fr;
+  gap: 10px;
+  align-items: center;
+  padding: 0;
+  margin: 15px 0;
+}
+
+.divider {
+  height: 0.5px;
+  width: auto;
+  background-color: grey;
+  margin: 10px 5px;
 }
