@@ -1,6 +1,7 @@
+import { ReactNode } from "react";
 import classes from "./CustomIcon.module.css";
 
-const CustomIcon = (props) => {
+const CustomIcon = (props: { className?: string; children: ReactNode }) => {
   return (
     <div
       className={`${classes.icon} ${props.className ? props.className : ""}`}

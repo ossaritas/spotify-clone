@@ -6,6 +6,9 @@
 .playlist {
   padding: 0;
   list-style: none;
+  overflow-y: scroll;
+  padding-bottom: 100px;
+  scroll-behavior: smooth;
 }
 
 .playlist > li {

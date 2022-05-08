@@ -72,13 +72,21 @@ const Footer = () => {
     player.seekTo(parseFloat(event.target.value), "fraction");
   };
 
-  const progressHandler = () => {
+  const progressHandler = (progress: {
+    played: number;
+    playedSeconds: number;
+    loaded: number;
+    loadedSeconds: number;
+  }) => {
     if (!seeking) {
       dispatch(playerActions.onProgress({ progress }));
     }
     if (progress.played >= 0.997) {
       dispatch(playerActions.onHandleEnd());
     }
+  };
+  const durationHandler = (duration: number) => {
+    dispatch(playerActions.onDuration({ duration }));
   };
   return (
     <footer className={classes["footer-container"]}>
@@ -95,9 +103,7 @@ const Footer = () => {
           onPlay={() => dispatch(playerActions.onPlay())}
           onEnded={() => dispatch(playerActions.onHandleEnd())}
           onProgress={progressHandler}
-          onDuration={(duration) =>
-            dispatch(playerActions.onDuration({ duration }))
-          }
+          onDuration={durationHandler}
           onError={(e) => console.log("onError", e)}
         />
 

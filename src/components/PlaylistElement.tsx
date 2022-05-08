@@ -40,9 +40,6 @@ const PlaylistElement = () => {
     description: string;
   }>();
 
-  console.log(tracks);
-  console.log(img);
-  console.log(details);
   useEffect(() => {
     const getDetails = async () => {
       const details = await Spotify.getPlaylistDetails(trackId);
