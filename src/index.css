@@ -1,50 +1,35 @@
-@font-face {
-  font-family: Circular;
-  src: url(./assests/circular-medium.woff2);
-}
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-* {
-  margin: 0;
-  user-select: none;
-  overflow: hidden;
+@layer base {
+  @font-face {
+    font-family: Circular;
+    src: url(./assests/circular-medium.woff2) format("woff2");
+  }
 }
-
-*::before,
-*::after {
-  margin: 0;
-  user-select: none;
-  overflow: hidden;
-}
-
 body {
   margin: 0;
   font-family: Circular, Helvetica, Arial, sans-serif;
   font-size: 16px;
-  line-height: 1.5;
+  line-height: 24px;
   color: white;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  cursor: default;
 }
 
-a {
-  color: white;
+.slider-thumb::-webkit-slider-thumb {
+  appearance: none;
+  width: 15px;
+  height: 15px;
+  background-color: #029232;
   cursor: pointer;
-  text-decoration: none;
-  display: inline-block;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  border-radius: 50px;
 }
 
-a:link,
-a:visited {
-  text-decoration: none;
-}
-
-a:hover,
-a:active,
-a:focus {
-  color: white;
+.slider-thumb::-webkit-slider-thumb:hover {
+  background-color: #04aa20;
 }
 
 /* width */

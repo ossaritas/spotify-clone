@@ -1,12 +1,11 @@
 import { useEffect, useState } from "react";
-import Spotify from "../../Spotify/Spotify";
-
-import MainContainer from "./MainContainer";
-import NavBar from "./NavBar";
-import classes from "./Browse.module.css";
-import Card from "../UI/Card";
 import { Routes, Route } from "react-router-dom";
 import { Image } from "../../Spotify/interfaces";
+
+import Spotify from "../../Spotify/Spotify";
+import BodyContainer from "../Layout/BodyContainer";
+import NavBar from "../Header/NavBar";
+import Card from "./Content/Card";
 
 type BrowsePlaylist = {
   message: string;
@@ -49,15 +48,17 @@ const Browse = () => {
   }, []);
 
   return (
-    <MainContainer>
+    <BodyContainer>
       <NavBar />
       <Routes>
         <Route
           path="/playlist"
           element={
-            <div className={classes.browse}>
-              <span>{playList ? playList.message : null}</span>
-              <div className={classes["browse-container"]}>
+            <div className="w-full h-auto mt-[70px] grid text-white">
+              <span className="mt-[10px] py-[10px] text-[35px] text-center">
+                {playList ? playList.message : null}
+              </span>
+              <div className="p-[15px] grid gap-[16px] grid-cols-fill-c grid-rows[auto]">
                 {playList
                   ? playList.items.map((item) => (
                       <Card
@@ -77,9 +78,11 @@ const Browse = () => {
         <Route
           path="/albums"
           element={
-            <div className={classes.browse}>
-              <span>{playList ? playList.message : null}</span>
-              <div className={classes["browse-container"]}>
+            <div className="w-full h-auto mt-[70px] grid text-white">
+              <span className="mt-[10px] py-[10px] text-[35px] text-center">
+                {playList ? playList.message : null}
+              </span>
+              <div className="p-[15px] grid gap-[16px] grid-cols-fill-c grid-rows[auto]">
                 {newRelease
                   ? newRelease
                       .filter((item) => item.available_markets.length > 80)
@@ -104,20 +107,13 @@ const Browse = () => {
         <Route
           path="*"
           element={
-            <h3
-              style={{
-                color: "darkgrey",
-                padding: "200px",
-                fontSize: "30px",
-                fontStyle: "italic",
-              }}
-            >
+            <h3 className="p-[200px] text-[30px] italic text-gray-400 ">
               WELCOME TO SPOTIFY CLONE, by O.Serdar Saritas.
             </h3>
           }
         />
       </Routes>
-    </MainContainer>
+    </BodyContainer>
   );
 };
 

@@ -1,16 +1,11 @@
 import { useState, useEffect } from "react";
-
-import CustomIcon from "./UI/CustomIcon";
 import PlayCircleFilledIcon from "@mui/icons-material/PlayCircleFilled";
 import FavoriteBorderRoundedIcon from "@mui/icons-material/FavoriteBorderRounded";
+import BodyContainer from "../Layout/BodyContainer";
+import NavButtons from "../Header/NavButtons";
+import Song from "./Content/Song";
 
-import classes from "./LikedSongs.module.css";
-
-import MainContainer from "./Hero/MainContainer";
-import NavButtons from "./Hero/NavButtons";
-import Song from "./Song";
-
-import Spotify from "../Spotify/Spotify";
+import Spotify from "../../Spotify/Spotify";
 
 type Tracks = {
   track: {
@@ -41,50 +36,43 @@ const LikedSongs = () => {
     getDetails();
   }, []);
   return (
-    <MainContainer>
+    <BodyContainer>
       <NavButtons />
-      <section className={classes.container}>
-        <div className={classes.header}>
-          <div className={classes["image-container"]}>
+      <section className="p-[20px] mt-[70px] space-y-[10px] ">
+        <div className="flex">
+          <div className="w-[232px] h-[232px] ">
             <img
+              className="w-full h-full object-contain "
               src="https://t.scdn.co/images/3099b3803ad9496896c43f22fe9be8c4.png"
               alt="rep"
             />
           </div>
-          <div className={classes.info}>
-            <span
-              style={{
-                fontSize: "20px",
-                textTransform: "uppercase",
-                color: "white",
-              }}
-            >
-              Liked Songs
-            </span>
+          <div className="flex flex-col justify-center space-y-[10px] ml-[20px]  ">
+            <span className="text-[20px] uppercase ">Liked Songs</span>
           </div>
         </div>
-        <div className={classes.list}>
-          <div className={classes["head-icons"]}>
-            <CustomIcon className={classes.ply}>
+        <div>
+          <div className="flex ml-[10px] ">
+            <button className="w-[75px] h-[75px] hover:scale-105 ">
               <PlayCircleFilledIcon
-                style={{ width: "62.5px", height: "62.5px" }}
+                style={{ color: "#1db954", width: "62.5px", height: "62.5px" }}
               />
-            </CustomIcon>
-            <CustomIcon className={classes.fav}>
+            </button>
+            <button className="w-[75px] h-[75px] hover:scale-105">
               <FavoriteBorderRoundedIcon
                 style={{ width: "45px", height: "45px" }}
               />
-            </CustomIcon>
+            </button>
           </div>
 
-          <div>
-            <ul className={classes.title}>
+          <div className="p-[15px]">
+            <ul className="text-[16px] w-full grid gap-[10px] grid-cols-[0.1fr_1fr_1fr_0.9fr] items-center p-[10px] mx-[5px] my-[10px] h-auto ">
               <li>#</li>
               <li>Title</li>
               <li>Artist</li>
               <li>Album</li>
             </ul>
-            <p className={classes.divider}></p>
+            <p className="h-[0.5px] w-auto p-[0.5px] mx-[10px] my-[5px] bg-gray-500"></p>
             {tracks
               ? tracks.map((item) => (
                   <Song
@@ -101,7 +89,7 @@ const LikedSongs = () => {
           </div>
         </div>
       </section>
-    </MainContainer>
+    </BodyContainer>
   );
 };
 

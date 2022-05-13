@@ -1,11 +1,10 @@
 import { useDispatch, useSelector } from "react-redux";
-import { playerActions } from "../store/player-slice";
+import { playerActions } from "../../../store/player-slice";
 import { Link } from "react-router-dom";
 
-import classes from "./Song.module.css";
-import PlayCircleOutlinedIcon from "@mui/icons-material/PlayCircleOutlined";
-import PauseCircleOutlineOutlinedIcon from "@mui/icons-material/PauseCircleOutlineOutlined";
-import { RootState } from "../store";
+import PlayArrowIcon from "@mui/icons-material/PlayArrow";
+import PauseIcon from "@mui/icons-material/Pause";
+import { RootState } from "../../../store";
 
 const Song = (props: {
   name: string;
@@ -55,38 +54,47 @@ const Song = (props: {
   };
   return (
     <div
-      tabIndex={-1}
-      className={`${classes["tracks-container"]} ${
+      className={`${"group text-[16px] w-full grid gap-[10px] grid-cols-[0.1fr_1fr_1fr_0.9fr] items-center p-[10px] mx-[5px] my-[10px] rounded-[5px] h-auto  ease-in duration-300 hover:bg-[#72727266] hover:text-white"} ${
         props.className ? props.className : ""
       }`}
     >
-      <div className={classes.play}>
+      <div className="col-start-1 col-end-2">
         <button
           onClick={() =>
             getSongData(props.artist, props.name, props.img, props.name)
           }
-          className={classes["play-button"]}
+          className="cursor-pointer hover:text-[#079707]"
         >
           {songData.id === props.name && playing ? (
-            <PauseCircleOutlineOutlinedIcon
+            <PauseIcon
               style={{ color: "#04aa6d", width: "32px", height: "32px" }}
             />
           ) : (
-            <PlayCircleOutlinedIcon style={{ width: "32px", height: "32px" }} />
+            <PlayArrowIcon style={{ width: "32px", height: "32px" }} />
           )}
         </button>
       </div>
-      <div className={classes.title}>
-        <div className={classes["img-container"]}>
-          <img src={props.img} alt="" />
+      <div className="col-start-2 col-end-3 flex items-center space-x-[15px]">
+        <div className="w-[40px] h-[40px]">
+          <img
+            className="w-full h-full object-contain"
+            src={props.img}
+            alt="song"
+          />
         </div>
-        <p>{props.name}</p>
+        <p className="cursor-default w-[240px] whitespace-nowrap overflow-hidden text-ellipsis">
+          {props.name}
+        </p>
       </div>
-      <div className={classes.artist}>
-        <Link to={`/artists/${props.artist_link}`}>{props.artist}</Link>
+      <div className="group-hover:text-white col-start-3 col-end-4 text-[#B8B8B8] whitespace-nowrap overflow-hidden text-ellipsis ">
+        <Link className="hover:underline" to={`/artists/${props.artist_link}`}>
+          {props.artist}
+        </Link>
       </div>
-      <div className={classes.album}>
-        <Link to={`/album/${props.album_link}`}>{props.album}</Link>
+      <div className="group-hover:text-white col-start-4 col-end-5 text-[#B8B8B8] whitespace-nowrap overflow-hidden text-ellipsis ">
+        <Link className="hover:underline" to={`/album/${props.album_link}`}>
+          {props.album}
+        </Link>
       </div>
     </div>
   );

@@ -1,7 +1,7 @@
 import React from "react";
 
 export default function Duration(props: {
-  className: string;
+  className?: string;
   seconds: number;
 }) {
   return (

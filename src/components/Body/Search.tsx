@@ -1,11 +1,9 @@
 import { useState, useEffect, useRef, ChangeEvent } from "react";
-import MainContainer from "./MainContainer";
-import classes from "./Search.module.css";
+import BodyContainer from "../Layout/BodyContainer";
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
-import CustomIcon from "../UI/CustomIcon";
 import Spotify from "../../Spotify/Spotify";
-import Card from "../UI/Card";
-import Song from "../Song";
+import Card from "./Content/Card";
+import Song from "./Content/Song";
 
 import artistImg from "../../assests/undefined-artist.png";
 
@@ -37,7 +35,7 @@ type searchedTracks = {
 };
 
 const Search = () => {
-  const [searchText, setSearchText] = useState("");
+  const [searchText, setSearchText] = useState<string>("");
   const [artists, setArtists] = useState<searchedArtists>();
   const [tracks, setTracks] = useState<searchedTracks>();
 
@@ -76,13 +74,14 @@ const Search = () => {
   console.log(artists);
   console.log(tracks);
   return (
-    <MainContainer>
-      <form className={classes.search}>
-        <label id="search">
-          <CustomIcon className={classes.icon}>
-            <SearchOutlinedIcon style={{ width: "30px", height: "30px" }} />
-          </CustomIcon>
+    <BodyContainer>
+      <form className="w-full h-[70px] flex items-center bg-gradient-to-r from-[#000000] to-[#200000]">
+        <label id="search" className="flex items-center">
+          <button className="w-[75px] h-[75px] hover:scale-105 ">
+            <SearchOutlinedIcon style={{ width: "25px", height: "25px" }} />
+          </button>
           <input
+            className="w-[200px] rounded whitespace-nowrap text-ellipsis pl-[5px] text-black focus:w-[360px] ease-in-out duration-300 outline-none italic"
             type="text"
             ref={inputRef}
             value={searchText}
@@ -91,14 +90,13 @@ const Search = () => {
           />
         </label>
       </form>
-      <div className={classes.browse}>
-        <div className={classes["browse-container"]}>
+      <div className="w-full h-auto grid text-white">
+        <div className="p-[15px] grid gap-[16px] grid-cols-fill-c grid-rows[auto]">
           {artists
             ? artists.items
                 ?.slice(0, 12)
                 .map((item) => (
                   <Card
-                    className={classes.artists}
                     id={item.id}
                     img={item.images[1]?.url || artistImg}
                     type="artists"
@@ -109,16 +107,16 @@ const Search = () => {
             : null}
         </div>
       </div>
-      <div className={classes.list}>
+      <div className="p-[15px]">
         {tracks ? (
-          <ul className={classes.title}>
+          <ul className="text-[16px] w-full grid gap-[10px] grid-cols-[0.1fr_1fr_1fr_0.9fr] items-center p-[10px] mx-[5px] my-[10px] h-auto ">
             <li>#</li>
             <li>Title</li>
             <li>Artist</li>
             <li>Album</li>
           </ul>
         ) : null}
-        <p className={classes.divider}></p>
+        <p className="h-[1px] w-auto mx-[10px] my-[5px] bg-gray-500"></p>
         {tracks ? (
           tracks.items
             ?.slice(0, 15)
@@ -146,7 +144,7 @@ const Search = () => {
           </h3>
         )}
       </div>
-    </MainContainer>
+    </BodyContainer>
   );
 };
 

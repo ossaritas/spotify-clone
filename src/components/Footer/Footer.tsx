@@ -1,5 +1,4 @@
 import { ChangeEvent, useEffect, useState } from "react";
-import classes from "./Footer.module.css";
 import PlayCircleIcon from "@mui/icons-material/PlayCircle";
 import PauseCircleFilledIcon from "@mui/icons-material/PauseCircleFilled";
 import SkipPreviousIcon from "@mui/icons-material/SkipPrevious";
@@ -89,8 +88,8 @@ const Footer = () => {
     dispatch(playerActions.onDuration({ duration }));
   };
   return (
-    <footer className={classes["footer-container"]}>
-      <div className={classes.info}>
+    <footer className="grid grid-cols-3 grid-flow-col row-start-2 row-end-3 col-start-1 col-end-3 h-[90px] bg-[#181818] ">
+      <div className="flex items-center p-[10px] ml-[10px] space-x-[10px]">
         <ReactPlayer
           ref={ref}
           url={url}
@@ -107,20 +106,22 @@ const Footer = () => {
           onError={(e) => console.log("onError", e)}
         />
 
-        <div className={classes["img-container"]}>
-          <img src={songData.img} alt="" />
+        <div className="w-[60px] h-[60px]  border-2 border-[#04aa6d] ">
+          <img
+            className="w-full h-full object-contain"
+            src={songData.img}
+            alt=""
+          />
         </div>
-        <p>
+        <p className="w-[200px] whitespace-nowrap overflow-hidden text-ellipsis ">
           {songData.artist} -- {songData.song}
         </p>
       </div>
-      <div className={classes.player}>
-        <div>
-          <Duration
-            className={classes.duration}
-            seconds={progress.playedSeconds}
-          />
+      <div className="flex flex-col p-[10px] items-center space-y-[5px] justify-center ">
+        <div className="flex flex-row items-center space-x-[8px] ">
+          <Duration className="text-[13px] " seconds={progress.playedSeconds} />
           <input
+            className="w-[200px] h-[4px] outline-none appearance-none slider-thumb bg-[#bcbaba] hover:bg-[#d1d1d1] hover:cursor-pointer rounded "
             onMouseDown={() => dispatch(playerActions.onMouseUp())}
             onMouseUp={() => dispatch(playerActions.onMouseDown())}
             onChange={seekHandler}
@@ -130,18 +131,21 @@ const Footer = () => {
             step="any"
             value={progress.played}
           />
-          <Duration className={classes.duration} seconds={duration} />
+          <Duration className="text-[13px]" seconds={duration} />
         </div>
 
-        <ul className={classes["player-actions"]}>
+        <ul className="w-[200px] flex flex-row justify-center ">
           <li>
-            <button>
+            <button className="hover:scale-110">
               <SkipPreviousIcon fontSize="large" />
             </button>
           </li>
 
           <li>
-            <button onClick={() => dispatch(playerActions.onPlayPause())}>
+            <button
+              className="hover:scale-110"
+              onClick={() => dispatch(playerActions.onPlayPause())}
+            >
               {!isPlaying ? (
                 <PlayCircleIcon fontSize="large" />
               ) : (
@@ -151,27 +155,28 @@ const Footer = () => {
           </li>
 
           <li>
-            <button>
+            <button className="hover:scale-110">
               <SkipNextIcon fontSize="large" />
             </button>
           </li>
         </ul>
       </div>
-      <div className={classes.volume}>
-        <ul className={classes["volume-actions"]}>
+      <div className="flex flex-row items-center justify-center ml-[150px] p-[10px] space-x-[5px]">
+        <ul className="flex space-x-[10px]">
           <li>
-            <button>
+            <button className="hover:scale-110">
               <DevicesIcon />
             </button>
           </li>
           <li>
-            <button onClick={volumeMuteHandler}>
+            <button className="hover:scale-110" onClick={volumeMuteHandler}>
               {volume === 0 ? <VolumeOffIcon /> : <VolumeUpIcon />}
             </button>
           </li>
         </ul>
-        <div className={classes["volume-duration"]}>
+        <div className="w-[150px] h-[30px] ">
           <input
+            className="w-[150px] h-[4px] outline-none appearance-none slider-thumb bg-[#bcbaba] hover:bg-[#d1d1d1] hover:cursor-pointer rounded "
             type="range"
             min={0}
             max={1}

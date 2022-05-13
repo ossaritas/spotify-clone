@@ -1,7 +1,16 @@
-import Body from "./components/Hero/Body";
+import Body from "./components/Body/Router/Body";
+import Sidebar from "./components/Sidebar/Sidebar";
+import Footer from "./components/Footer/Footer";
+import MainContainer from "./components/Layout/MainContainer";
 
 function App() {
-  return <Body />;
+  return (
+    <MainContainer>
+      <Sidebar />
+      <Footer />
+      <Body />
+    </MainContainer>
+  );
 }
 
 export default App;

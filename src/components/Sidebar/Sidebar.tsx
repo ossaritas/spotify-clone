@@ -1,42 +1,49 @@
-import classes from "./Sidebar.module.css";
-import Element, { OptionsType } from "../Elements/Element";
 import { Link } from "react-router-dom";
 
 import logo from "../../assests/spLogo.png";
 import HomeIcon from "@mui/icons-material/Home";
 import SearchIcon from "@mui/icons-material/Search";
 import LibraryMusicIcon from "@mui/icons-material/LibraryMusic";
-import PlayList from "./Playlist";
-
-const homeOptions: OptionsType[] = [
-  {
-    title: "Home",
-    link: "/",
-    icon: <HomeIcon className={classes.icon} />,
-  },
-  { title: "Search", link: "/search", icon: <SearchIcon /> },
-  { title: "Liked Songs", link: "/liked", icon: <LibraryMusicIcon /> },
-];
+import Favourites from "./Favourites";
 
 const Sidebar = () => {
   return (
-    <div className={classes.sidebar}>
-      <div className={classes["image-container"]}>
+    <div className="overflow-hidden grid-row-start-1 grid-row-end-3 grid-col-start-1 grid-col-end-2 bg-black pl-[15px] pt-[15px] min-w-[241px] flex flex-col transition duration-150 ease-out">
+      <div className="w-auto h-[50px] m-[10px]">
         <Link to="/">
-          <img className={classes.image} src={logo} alt="" />
+          <img className="w-[130px] h-[40px] " src={logo} alt="" />
         </Link>
       </div>
+      <Link
+        className="flex p-[10px] items-center text-[#b3b3b3] focus:text-white hover:text-white"
+        to="/"
+      >
+        <div>
+          <HomeIcon />
+        </div>
+        <div className="ml-[10px] p-[2px] h-[24px]">Home</div>
+      </Link>
+      <Link
+        className="flex p-[10px] items-center text-[#b3b3b3] focus:text-white hover:text-white"
+        to="/search"
+      >
+        <div>
+          <SearchIcon />
+        </div>
+        <div className="ml-[10px] p-[2px] h-[24px]">Search</div>
+      </Link>
+      <Link
+        className="flex p-[10px] items-center text-[#b3b3b3] focus:text-white hover:text-white"
+        to="/liked"
+      >
+        <div>
+          <LibraryMusicIcon />
+        </div>
+        <div className="ml-[10px] p-[2px] h-[24px]">Liked Songs</div>
+      </Link>
 
-      {homeOptions.map((item) => (
-        <Element
-          key={item.title}
-          title={item.title}
-          icon={item.icon}
-          link={item.link}
-        />
-      ))}
-      <p className={classes.divider}></p>
-      <PlayList />
+      <p className="h-[0.5px] w-auto p-[0.5px] mx-[10px] my-[10px] bg-gray-500"></p>
+      <Favourites />
     </div>
   );
 };
