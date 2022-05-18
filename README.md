@@ -13,6 +13,7 @@ React player element used via youtube.
  <li>Redux/Redux-Toolkit </li>
  <li>Type Script</li>
  <li>Tailwind CSS</li>
+ <li>Chakra-UI</li>
 </ul>
 
 <h1>How to use</h1>
@@ -25,11 +26,7 @@ React player element used via youtube.
 
 <h1>Preview</h1>
 
-![1-720](https://user-images.githubusercontent.com/81383004/168312260-547fac10-0092-4eda-bd32-b250d96a3503.gif)
-
-![2-720](https://user-images.githubusercontent.com/81383004/168312287-3f9a4ebf-7569-4357-8620-cb3ff3c64eab.gif)
-
-![3-720](https://user-images.githubusercontent.com/81383004/168313223-477d2b2b-03fa-4c64-8a52-ce19aa2711ea.gif)
+![output_bHFysp](https://user-images.githubusercontent.com/81383004/169011974-60da1d4e-294c-4f51-a2d5-72a194c45464.gif)
 
 
 
