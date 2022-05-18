@@ -6,7 +6,7 @@ import { Provider as StoreProvider } from "react-redux";
 import store from "./store/index";
 import { ThemeProvider } from "./theme/index";
 
-const root = createRoot(document.getElementById("root"));
+const root = createRoot(document.getElementById("root")!);
 root.render(
   <Router>
     <StoreProvider store={store}>
