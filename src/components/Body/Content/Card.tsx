@@ -1,5 +1,6 @@
+import { Box, Button, Image, VStack, Link, Text } from "@chakra-ui/react";
 import { PlayArrowRounded } from "@mui/icons-material";
-import { Link } from "react-router-dom";
+import { Link as ReachTo } from "react-router-dom";
 
 const Card = (props: {
   className?: string;
@@ -10,35 +11,57 @@ const Card = (props: {
   id: string;
 }) => {
   return (
-    <div
-      className={`${"group h-[240px] flex flex-col items-center p-[16px] rounded-[10px] bg-[#1F1F1F] shadow-xl space-y-[5px] transition-all ease-in-out  duration-300 hover:bg-[#333333] "} ${
-        props.className ? props.className : ""
-      }`}
+    <VStack
+      role="group"
+      h="60"
+      p="4"
+      boxShadow="lg"
+      bg="#1F1F1F"
+      transition="ease-out 200ms"
+      spacing="1.5"
+      borderRadius="lg"
+      _hover={{ bg: "#333333" }}
     >
-      <div className="w-[150px] h-[150px] ">
-        <div className="relative w-[150px] h-[150px]">
-          <img
-            className="w-full h-full object-contain rounded-[5px] shadow-sm shadow-[#181818]"
-            src={props.img}
-            alt="Cover"
-          />
-        </div>
+      <Box boxSize="36" position="relative">
+        <Image
+          boxSize="36"
+          boxShadow="sm"
+          borderRadius="lg"
+          src={props.img}
+          alt="Cover"
+        />
 
-        <button className="relative bottom-[35%] hidden left-[65%] text-white bg-[#1db954] opacity-90 rounded-full group-hover:block  hover:opacity-100 hover:scale-105">
-          <Link to={`/${props.type}/${props.id}`}>
-            <PlayArrowRounded style={{ width: "45px", height: "45px" }} />
+        <Button
+          padding="1"
+          size="lg"
+          _groupHover={{ display: "block" }}
+          _hover={{ bg: "spotify.g2", transform: "scale(1.1)" }}
+          position="relative"
+          bottom="35%"
+          display="none"
+          left="65%"
+          backgroundColor="spotify.g1"
+          borderRadius="full"
+        >
+          <Link color="E0DFD5" as={ReachTo} to={`/${props.type}/${props.id}`}>
+            <PlayArrowRounded
+              style={{
+                color: "E0DFD5",
+                width: "40px",
+                height: "40px",
+                padding: "2px",
+              }}
+            />
           </Link>
-        </button>
-      </div>
-      <div className="text-[#c9c9c9] w-[150px] whitespace-nowrap overflow-hidden text-ellipsis">
-        <span>{props.title}</span>
-      </div>
-      <div className="text-[12px] text-[#8c8b8b] w-[150px] whitespace-nowrap overflow-hidden text-ellipsis">
-        <span>
-          {props.description} - {props.type.toUpperCase()}
-        </span>
-      </div>
-    </div>
+        </Button>
+      </Box>
+      <Text noOfLines={1} w="36">
+        {props.title}
+      </Text>
+      <Text noOfLines={1} w="36" fontSize="smaller" color="spotify.text-gray">
+        {props.description} &middot; {props.type.toUpperCase()}
+      </Text>
+    </VStack>
   );
 };
 

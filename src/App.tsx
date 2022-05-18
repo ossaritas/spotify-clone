@@ -4,6 +4,7 @@ import Footer from "./components/Footer/Footer";
 import MainContainer from "./components/Layout/MainContainer";
 
 function App() {
+  console.log("app");
   return (
     <MainContainer>
       <Sidebar />

@@ -1,8 +1,31 @@
-const BodyContainer = (props: { className?: string; children?: any }) => {
+import { GridItem } from "@chakra-ui/react";
+import { usePalette } from "react-palette";
+//bgGradient={`linear(to-b, ${data.darkMuted},  ${data.darkVibrant})`}
+
+const BodyContainer = (props: {
+  img?: string;
+  className?: string;
+  children?: any;
+}) => {
+  let image: string;
+  if (props.img) {
+    image = props.img;
+  } else {
+    image = "https://t.scdn.co/images/3099b3803ad9496896c43f22fe9be8c4.png";
+  }
+  const { data } = usePalette(image);
   return (
-    <div className="row-start-1 row-end-2 col-start-2 col-end-3 overflow-y-scroll pb-[50px] bg-gradient-to-br from-[#48a0b04d] to-[#000000]">
+    <GridItem
+      h="full"
+      pb="0"
+      bgGradient={`linear(to-b, ${data.darkMuted},  ${data.darkVibrant})`}
+      gridRow="1/2"
+      gridColumn="2/3"
+      bgColor="gray.700"
+      overflowY="scroll"
+    >
       {props.children}
-    </div>
+    </GridItem>
   );
 };
 

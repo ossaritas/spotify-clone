@@ -1,16 +1,18 @@
-import React from "react";
+import { Text } from "@chakra-ui/react";
 
 export default function Duration(props: {
   className?: string;
   seconds: number;
 }) {
   return (
-    <time
-      dateTime={`P${Math.round(props.seconds)}S`}
-      className={props.className}
-    >
-      {format(props.seconds)}
-    </time>
+    <Text fontSize="14px">
+      <time
+        dateTime={`P${Math.round(props.seconds)}S`}
+        className={props.className}
+      >
+        {format(props.seconds)}
+      </time>
+    </Text>
   );
 }
 

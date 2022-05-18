@@ -1,32 +1,47 @@
-import { Link } from "react-router-dom";
+import { Container, Link, HStack, Text } from "@chakra-ui/react";
+import { Link as ReachTo } from "react-router-dom";
 
 const NavBar = () => {
   return (
-    <div className="fixed top-0 w-full flex items-center h-[70px] bg-gradient-to-bl from-[#00000085] to-[#000000]">
-      <ul className="flex space-x-4 px-[15px] list-none">
-        <li className="text-[#10a710] font-semibold cursor-default p-[5px]">
-          FEATURED
-        </li>
-        <li className="flex">
-          <Link
-            className="p-[5px] rounded  hover:text-[#c6c2c2] focus:text-white focus:bg-gray-500"
-            to="/playlist"
-          >
-            {" "}
-            Playlists
-          </Link>
-        </li>
-
-        <li className="flex">
-          <Link
-            className="p-[5px] rounded  hover:text-[#c6c2c2] focus:text-white focus:bg-gray-500 active:bg-gray-500"
-            to="/albums"
-          >
-            Albums
-          </Link>{" "}
-        </li>
-      </ul>
-    </div>
+    <Container
+      zIndex="sticky"
+      position="fixed"
+      top="0"
+      p="0"
+      maxW="full"
+      bgGradient={"linear(to-t, #000000,  #3d3d3d)"}
+    >
+      <HStack pl="7" h="16">
+        <Text color="spotify.g2">FEATURED</Text>
+        <Link
+          borderRadius="6"
+          _activeLink={{ color: "white" }}
+          _focus={{ outline: "none", color: "white", bgColor: "gray.700" }}
+          _hover={{ color: "gray.200" }}
+          display="flex"
+          p="2"
+          color="spotify.text-gray"
+          as={ReachTo}
+          to="/playlist"
+        >
+          {" "}
+          Playlists
+        </Link>
+        <Link
+          borderRadius="6"
+          _activeLink={{ color: "white" }}
+          _focus={{ outline: "none", color: "white", bg: "gray.700" }}
+          _hover={{ color: "gray.200" }}
+          display="flex"
+          p="2"
+          color="spotify.text-gray"
+          as={ReachTo}
+          to="/albums"
+        >
+          Albums
+        </Link>{" "}
+      </HStack>
+    </Container>
   );
 };
 

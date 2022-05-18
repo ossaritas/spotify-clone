@@ -1,10 +1,11 @@
 import { useDispatch, useSelector } from "react-redux";
 import { playerActions } from "../../../store/player-slice";
-import { Link } from "react-router-dom";
+import { Link as ReachTo } from "react-router-dom";
 
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 import PauseIcon from "@mui/icons-material/Pause";
 import { RootState } from "../../../store";
+import { Button, HStack, Image, Text, Link } from "@chakra-ui/react";
 
 const Song = (props: {
   name: string;
@@ -53,50 +54,66 @@ const Song = (props: {
     }
   };
   return (
-    <div
-      className={`${"group text-[16px] w-full grid gap-[10px] grid-cols-[0.1fr_1fr_1fr_0.9fr] items-center p-[10px] mx-[5px] my-[10px] rounded-[5px] h-auto  ease-in duration-300 hover:bg-[#72727266] hover:text-white"} ${
-        props.className ? props.className : ""
-      }`}
+    <HStack
+      borderRadius="lg"
+      w="full"
+      _hover={{ bg: "#72727266", color: "white" }}
+      role="group"
+      p="2.5"
+      my="2.5"
+      h="auto"
+      transition="ease-in 300ms"
     >
-      <div className="col-start-1 col-end-2">
-        <button
-          onClick={() =>
-            getSongData(props.artist, props.name, props.img, props.name)
-          }
-          className="cursor-pointer hover:text-[#079707]"
-        >
-          {songData.id === props.name && playing ? (
-            <PauseIcon
-              style={{ color: "#04aa6d", width: "32px", height: "32px" }}
-            />
-          ) : (
-            <PlayArrowIcon style={{ width: "32px", height: "32px" }} />
-          )}
-        </button>
-      </div>
-      <div className="col-start-2 col-end-3 flex items-center space-x-[15px]">
-        <div className="w-[40px] h-[40px]">
-          <img
-            className="w-full h-full object-contain"
-            src={props.img}
-            alt="song"
+      <Button
+        w="3vw"
+        _hover={{ color: "spotify.g1" }}
+        onClick={() =>
+          getSongData(props.artist, props.name, props.img, props.name)
+        }
+      >
+        {songData.id === props.name && playing ? (
+          <PauseIcon
+            style={{ color: "#04aa6d", width: "32px", height: "32px" }}
           />
-        </div>
-        <p className="cursor-default w-[240px] whitespace-nowrap overflow-hidden text-ellipsis">
+        ) : (
+          <PlayArrowIcon style={{ width: "32px", height: "32px" }} />
+        )}
+      </Button>
+      <HStack w="33vw">
+        <Image boxSize="10" objectFit="contain" src={props.img} alt="song" />
+        <Text w="80%" noOfLines={1}>
           {props.name}
-        </p>
-      </div>
-      <div className="group-hover:text-white col-start-3 col-end-4 text-[#B8B8B8] whitespace-nowrap overflow-hidden text-ellipsis ">
-        <Link className="hover:underline" to={`/artists/${props.artist_link}`}>
+        </Text>
+      </HStack>
+      <Text
+        w="33vw"
+        noOfLines={1}
+        color="spotify.text-gray"
+        _groupHover={{ color: "white" }}
+      >
+        <Link
+          as={ReachTo}
+          _hover={{ textDecor: "underline" }}
+          to={`/artists/${props.artist_link}`}
+        >
           {props.artist}
         </Link>
-      </div>
-      <div className="group-hover:text-white col-start-4 col-end-5 text-[#B8B8B8] whitespace-nowrap overflow-hidden text-ellipsis ">
-        <Link className="hover:underline" to={`/album/${props.album_link}`}>
+      </Text>
+      <Text
+        w="33vw"
+        noOfLines={1}
+        color="spotify.text-gray"
+        _groupHover={{ color: "white" }}
+      >
+        <Link
+          as={ReachTo}
+          _hover={{ textDecor: "underline" }}
+          to={`/album/${props.album_link}`}
+        >
           {props.album}
         </Link>
-      </div>
-    </div>
+      </Text>
+    </HStack>
   );
 };
 

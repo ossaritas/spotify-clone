@@ -1,5 +1,6 @@
+import { Container, List, ListItem, Link } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link as ReachTo } from "react-router-dom";
 import { PlaylistItems } from "../../Spotify/interfaces";
 
 import Spotify from "../../Spotify/Spotify";
@@ -17,25 +18,33 @@ const Favourites = () => {
   }, []);
 
   return (
-    <div className="pl-[10px] leading-[20px] overflow-y-scroll ">
-      <ul className="pb-[20px] list-none">
+    <Container maxW="full" p="0">
+      <List pb="20" overflowY="scroll" h="lg">
         {playList
           ? playList.map((item) => (
-              <li
-                className="w-[200px] h-[32px] p-[2px] whitespace-nowrap overflow-hidden text-ellipsis"
+              <ListItem
+                h="8"
+                p="2px"
+                whiteSpace="nowrap"
+                overflow="hidden"
+                textOverflow="ellipsis"
                 key={item.id}
               >
                 <Link
-                  className="text-[#B8B8B8] hover:text-white active:text-white focus:text-white"
+                  _activeLink={{ color: "white" }}
+                  _focus={{ outline: "none", color: "white" }}
+                  _hover={{ color: "gray.200" }}
+                  color="spotify.text-gray"
+                  as={ReachTo}
                   to={`/playlists/${item.id}`}
                 >
                   {item.name}
                 </Link>
-              </li>
+              </ListItem>
             ))
           : null}
-      </ul>
-    </div>
+      </List>
+    </Container>
   );
 };
 

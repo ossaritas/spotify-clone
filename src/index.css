@@ -1,35 +1,6 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
-@layer base {
-  @font-face {
-    font-family: Circular;
-    src: url(./assests/circular-medium.woff2) format("woff2");
-  }
-}
-body {
-  margin: 0;
-  font-family: Circular, Helvetica, Arial, sans-serif;
-  font-size: 16px;
-  line-height: 24px;
-  color: white;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  cursor: default;
-}
-
-.slider-thumb::-webkit-slider-thumb {
-  appearance: none;
-  width: 15px;
-  height: 15px;
-  background-color: #029232;
-  cursor: pointer;
-  border-radius: 50px;
-}
-
-.slider-thumb::-webkit-slider-thumb:hover {
-  background-color: #04aa20;
+@font-face {
+  font-family: Circular;
+  src: url(./assests/circular-medium.woff2) format("woff2");
 }
 
 /* width */
@@ -39,15 +10,15 @@ body {
 
 /* Track */
 ::-webkit-scrollbar-track {
-  background: black;
+  background-color: black;
 }
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
-  background: #4e4e4e;
+  background-color: #4e4e4e;
 }
 
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
-  background: rgb(63, 63, 63);
+  background-color: rgb(63, 63, 63);
 }

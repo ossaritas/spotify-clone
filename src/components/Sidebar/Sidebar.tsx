@@ -1,50 +1,83 @@
-import { Link } from "react-router-dom";
+import { Link as ReachTo } from "react-router-dom";
 
 import logo from "../../assests/spLogo.png";
 import HomeIcon from "@mui/icons-material/Home";
 import SearchIcon from "@mui/icons-material/Search";
 import LibraryMusicIcon from "@mui/icons-material/LibraryMusic";
 import Favourites from "./Favourites";
+import { Image, VStack, Link, Text, GridItem, Box } from "@chakra-ui/react";
+import { Divider } from "@chakra-ui/react";
 
 const Sidebar = () => {
   return (
-    <div className="overflow-hidden grid-row-start-1 grid-row-end-3 grid-col-start-1 grid-col-end-2 bg-black pl-[15px] pt-[15px] min-w-[241px] flex flex-col transition duration-150 ease-out">
-      <div className="w-auto h-[50px] m-[10px]">
-        <Link to="/">
-          <img className="w-[130px] h-[40px] " src={logo} alt="" />
-        </Link>
-      </div>
-      <Link
-        className="flex p-[10px] items-center text-[#b3b3b3] focus:text-white hover:text-white"
-        to="/"
-      >
-        <div>
+    <GridItem
+      gridArea="1/1/3/2"
+      overflow="hidden"
+      bg="spotify.sidebar"
+      p="5"
+      minW="60"
+      w="52"
+      transition="ease-out 200ms"
+    >
+      <VStack alignItems="flex-start">
+        <Box m="1.5" p="0">
+          <Link _focus={{ outline: "none" }} as={ReachTo} to="/">
+            <Image w="32" h="10" src={logo} alt="logo" />
+          </Link>
+        </Box>
+        <Link
+          _activeLink={{ color: "white" }}
+          _focus={{ outline: "none", color: "white" }}
+          _hover={{ color: "gray.200" }}
+          display="flex"
+          p="2"
+          color="spotify.text-gray"
+          as={ReachTo}
+          to="/"
+        >
           <HomeIcon />
-        </div>
-        <div className="ml-[10px] p-[2px] h-[24px]">Home</div>
-      </Link>
-      <Link
-        className="flex p-[10px] items-center text-[#b3b3b3] focus:text-white hover:text-white"
-        to="/search"
-      >
-        <div>
-          <SearchIcon />
-        </div>
-        <div className="ml-[10px] p-[2px] h-[24px]">Search</div>
-      </Link>
-      <Link
-        className="flex p-[10px] items-center text-[#b3b3b3] focus:text-white hover:text-white"
-        to="/liked"
-      >
-        <div>
-          <LibraryMusicIcon />
-        </div>
-        <div className="ml-[10px] p-[2px] h-[24px]">Liked Songs</div>
-      </Link>
 
-      <p className="h-[0.5px] w-auto p-[0.5px] mx-[10px] my-[10px] bg-gray-500"></p>
-      <Favourites />
-    </div>
+          <Text ml="1.5" p="2px" h="1.5">
+            Home
+          </Text>
+        </Link>
+        <Link
+          _activeLink={{ color: "white" }}
+          _focus={{ outline: "none", color: "white" }}
+          _hover={{ color: "gray.200" }}
+          display="flex"
+          p="2"
+          color="spotify.text-gray"
+          as={ReachTo}
+          to="/search"
+        >
+          <SearchIcon />
+
+          <Text ml="1.5" p="2px" h="1.5">
+            Search
+          </Text>
+        </Link>
+        <Link
+          _activeLink={{ color: "white" }}
+          _focus={{ outline: "none", color: "white" }}
+          _hover={{ color: "gray.200" }}
+          display="flex"
+          p="2"
+          color="spotify.text-gray"
+          as={ReachTo}
+          to="/liked"
+        >
+          <LibraryMusicIcon />
+
+          <Text ml="1.5" p="2px" h="1.5">
+            Liked Songs
+          </Text>
+        </Link>
+
+        <Divider />
+        <Favourites />
+      </VStack>
+    </GridItem>
   );
 };
 
