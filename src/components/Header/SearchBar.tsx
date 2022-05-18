@@ -7,11 +7,12 @@ import {
   Stack,
 } from "@chakra-ui/react";
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
+import { ChangeEvent } from "react";
 
 const SearchBar = (props: {
   inputRef: any;
   searchText: string;
-  searchHandler: () => void;
+  searchHandler: (event: ChangeEvent<HTMLInputElement>) => void;
 }) => {
   return (
     <FormControl
@@ -47,12 +48,12 @@ const SearchBar = (props: {
               }
             />
             <Input
+              autoComplete="off"
               p="2"
               borderRadius="lg"
               noOfLines={1}
               _focus={{ w: "96" }}
               w="50"
-              // className="w-[200px] rounded whitespace-nowrap text-ellipsis pl-[5px] text-black focus:w-[360px] ease-in-out duration-300 outline-none italic"
               type="text"
               ref={props.inputRef}
               value={props.searchText}

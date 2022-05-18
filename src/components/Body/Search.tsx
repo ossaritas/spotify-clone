@@ -76,7 +76,7 @@ const Search = () => {
       <SearchBar
         inputRef={inputRef}
         searchText={searchText}
-        searchHandler={() => searchHandler}
+        searchHandler={searchHandler}
       />
       <ElementContainer card={true}>
         {artists
